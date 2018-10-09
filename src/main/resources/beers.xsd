@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="ArrayOfBeer" type="ArrayOfBeerType"/>
+
+    <xs:complexType name="ArrayOfBeerType">
+        <xs:sequence>
+            <xs:element name="Beer" type="BeerType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="BeerType">
+        <xs:sequence>
+            <xs:element name="Brand" type="xs:string"/>
+            <xs:element name="Sort" type="SortType"/>
+            <xs:element name="Alcohol" type="xs:string"/>
+            <xs:element name="Brewery" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SortType">
+        <xs:sequence>
+            <xs:element name="string" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
