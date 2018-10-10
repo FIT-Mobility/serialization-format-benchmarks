@@ -9,9 +9,9 @@ import com.goekay.ByteArrayMapper;
  */
 public class JacksonXmlByteArrayMapper implements ByteArrayMapper<ArrayOfBeer> {
 
-    private final JacksonXmlMapper delegate;
+    private final JacksonXmlStringMapper delegate;
 
-    public JacksonXmlByteArrayMapper(JacksonXmlMapper delegate) {
+    public JacksonXmlByteArrayMapper(JacksonXmlStringMapper delegate) {
         this.delegate = delegate;
     }
 

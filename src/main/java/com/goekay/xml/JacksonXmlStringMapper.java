@@ -9,11 +9,11 @@ import com.goekay.StringMapper;
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 09.10.2018
  */
-public class JacksonXmlMapper implements StringMapper<ArrayOfBeer> {
+public class JacksonXmlStringMapper implements StringMapper<ArrayOfBeer> {
 
     final XmlMapper mapper = new XmlMapper();
 
-    public JacksonXmlMapper() {
+    public JacksonXmlStringMapper() {
         mapper.setDefaultUseWrapper(false);
         mapper.registerModule(new JaxbAnnotationModule());
     }

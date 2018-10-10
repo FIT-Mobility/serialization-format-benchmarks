@@ -10,11 +10,11 @@ import org.msgpack.jackson.dataformat.MessagePackFactory;
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 10.10.2018
  */
-public class MessagePackMapper implements ByteArrayMapper<ArrayOfBeer> {
+public class MessagePackByteArrayMapper implements ByteArrayMapper<ArrayOfBeer> {
 
     private final ObjectMapper mapper;
 
-    public MessagePackMapper() {
+    public MessagePackByteArrayMapper() {
         mapper = new ObjectMapper(new MessagePackFactory());
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }

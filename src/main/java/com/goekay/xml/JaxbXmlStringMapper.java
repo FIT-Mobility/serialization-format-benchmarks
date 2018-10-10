@@ -20,13 +20,13 @@ import java.net.URL;
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 09.10.2018
  */
-public class JaxbXmlMapper implements StringMapper<ArrayOfBeer> {
+public class JaxbXmlStringMapper implements StringMapper<ArrayOfBeer> {
 
-    private final JAXBContext jaxbContext;
-    private final Schema schema;
-    private final boolean validate;
+    final JAXBContext jaxbContext;
+    final Schema schema;
+    final boolean validate;
 
-    public JaxbXmlMapper(boolean validate) {
+    public JaxbXmlStringMapper(boolean validate) {
         this.validate = validate;
 
         try {

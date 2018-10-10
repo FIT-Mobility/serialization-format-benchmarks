@@ -13,11 +13,11 @@ import java.io.StringWriter;
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 09.10.2018
  */
-public class JacksonJsonMapper implements StringMapper<ArrayOfBeer> {
+public class JacksonJsonStringMapper implements StringMapper<ArrayOfBeer> {
 
     final ObjectMapper mapper;
 
-    public JacksonJsonMapper() {
+    public JacksonJsonStringMapper() {
         mapper = new ObjectMapper();
 
         mapper.setAnnotationIntrospector(

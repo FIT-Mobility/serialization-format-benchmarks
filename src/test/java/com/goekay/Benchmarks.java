@@ -1,10 +1,10 @@
 package com.goekay;
 
 import com.example.myschema.ArrayOfBeer;
-import com.goekay.json.JacksonJsonMapper;
-import com.goekay.msgpack.MessagePackMapper;
-import com.goekay.xml.JacksonXmlMapper;
-import com.goekay.xml.JaxbXmlMapper;
+import com.goekay.json.JacksonJsonStringMapper;
+import com.goekay.msgpack.MessagePackByteArrayMapper;
+import com.goekay.xml.JacksonXmlStringMapper;
+import com.goekay.xml.JaxbXmlStringMapper;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
@@ -35,12 +35,12 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class Benchmarks {
 
-    private JacksonJsonMapper jacksonJsonMapper;
+    private JacksonJsonStringMapper jacksonJsonMapper;
 
-    private JaxbXmlMapper jaxbXmlMapper;
-    private JacksonXmlMapper jacksonXmlMapper;
+    private JaxbXmlStringMapper jaxbXmlMapper;
+    private JacksonXmlStringMapper jacksonXmlMapper;
 
-    private MessagePackMapper messagePackMapper;
+    private MessagePackByteArrayMapper messagePackMapper;
 
     private String dataAsXmlString;
     private String dataAsJsonString;
@@ -66,10 +66,10 @@ public class Benchmarks {
     public final void prepare() throws Exception {
         String tmp = readFile(Paths.get("src/main/resources", "beers.xml"));
 
-        jaxbXmlMapper = new JaxbXmlMapper(false);
-        jacksonJsonMapper = new JacksonJsonMapper();
-        jacksonXmlMapper = new JacksonXmlMapper();
-        messagePackMapper = new MessagePackMapper();
+        jaxbXmlMapper = new JaxbXmlStringMapper(false);
+        jacksonJsonMapper = new JacksonJsonStringMapper();
+        jacksonXmlMapper = new JacksonXmlStringMapper();
+        messagePackMapper = new MessagePackByteArrayMapper();
 
         dataAsObject = jaxbXmlMapper.readNoThrow(tmp);
         dataAsXmlString = jaxbXmlMapper.writeNoThrow(dataAsObject);
