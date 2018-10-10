@@ -1,19 +1,27 @@
 package de.fraunhofer.fit.cscw.mobility.sfb;
 
+import com.example.myproto.Protobuf;
 import com.example.myschema.ArrayOfBeer;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.protobuf.ProtobufConverter;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
-import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonStringMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
-import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlStringMapper;
-import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JaxbXmlStringMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JaxbXmlByteArrayMapper;
+import lombok.RequiredArgsConstructor;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.List;
+
+import static de.fraunhofer.fit.cscw.mobility.sfb.Utils.GROUND_TRUTH;
 
 /**
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
@@ -22,39 +30,58 @@ import java.nio.file.StandardOpenOption;
 public class SanityChecks {
 
     @Test
-    public void testIfEqual() throws Exception {
-        JaxbXmlStringMapper jaxbXmlStringMapper = new JaxbXmlStringMapper(false);
-        JacksonXmlStringMapper jacksonXmlMapper = new JacksonXmlStringMapper();
-        JacksonJsonStringMapper jacksonJsonMapper = new JacksonJsonStringMapper();
-        MessagePackByteArrayMapper messagePackMapper = new MessagePackByteArrayMapper();
-        EXIficientByteArrayMapper exificientMapper = new EXIficientByteArrayMapper();
+    public void testIfEqual() {
+        List<MapperTestCase> cases = Arrays.asList(
+                new MapperTestCase(new JaxbXmlByteArrayMapper(false), "data-jaxb.xml"),
+                new MapperTestCase(new JacksonXmlByteArrayMapper(), "data-jackson.xml", false),
+                new MapperTestCase(new JacksonJsonByteArrayMapper(), "data-jackson.json"),
+                new MapperTestCase(new InternalProtobufMapper(), "proto-buf"),
+                new MapperTestCase(new MessagePackByteArrayMapper(), "message-pack"),
+                new MapperTestCase(new EXIficientByteArrayMapper(), "data-exificient", false)
+        );
 
-        ArrayOfBeer groundTruth = Utils.GROUND_TRUTH;
-        String xmlFile = Utils.XML_FILE;
-
-        Files.write(Paths.get("target", "data-jaxb.xml"), jaxbXmlStringMapper.writeNoThrow(groundTruth).getBytes(), StandardOpenOption.CREATE);
-        Files.write(Paths.get("target", "data-jackson.xml"), jacksonXmlMapper.writeNoThrow(groundTruth).getBytes(), StandardOpenOption.CREATE);
-        Files.write(Paths.get("target", "data-jackson.json"), jacksonJsonMapper.writeNoThrow(groundTruth).getBytes(), StandardOpenOption.CREATE);
-        Files.write(Paths.get("target", "message-pack"), messagePackMapper.writeNoThrow(groundTruth), StandardOpenOption.CREATE);
-        Files.write(Paths.get("target", "data-exificient"), exificientMapper.write(groundTruth), StandardOpenOption.CREATE);
-        Files.write(Paths.get("target", "proto-buf"), toProtobuf(groundTruth), StandardOpenOption.CREATE);
-
-        Assert.assertEquals(groundTruth, jacksonXmlMapper.read(xmlFile));
-        Assert.assertEquals(groundTruth, jacksonJsonMapper.read(jacksonJsonMapper.write(groundTruth)));
-        Assert.assertEquals(groundTruth, messagePackMapper.read(messagePackMapper.write(groundTruth)));
-        Assert.assertEquals(groundTruth, exificientMapper.read(exificientMapper.write(groundTruth)));
-        Assert.assertEquals(groundTruth, toProtobufAndBack(groundTruth));
+        cases.forEach(MapperTestCase::writeToFile);
+        cases.forEach(MapperTestCase::convertAndAssert);
     }
 
-    private static byte[] toProtobuf(ArrayOfBeer groundTruth) {
-        return ProtobufByteArrayMapper.INSTANCE.writeNoThrow(
-                ProtobufConverter.INSTANCE.convert(groundTruth));
+    private static class InternalProtobufMapper implements ByteArrayMapper<ArrayOfBeer> {
+
+        @Override
+        public ArrayOfBeer read(byte[] data) throws Exception {
+            Protobuf.ArrayOfBeerType read = ProtobufByteArrayMapper.INSTANCE.read(data);
+            return ProtobufConverter.INSTANCE.convertBack(read);
+        }
+
+        @Override
+        public byte[] write(ArrayOfBeer obj) throws Exception {
+            Protobuf.ArrayOfBeerType convert = ProtobufConverter.INSTANCE.convert(obj);
+            return ProtobufByteArrayMapper.INSTANCE.write(convert);
+        }
     }
 
-    private static ArrayOfBeer toProtobufAndBack(ArrayOfBeer groundTruth) {
-        return ProtobufConverter.INSTANCE.convertBack(
-                ProtobufByteArrayMapper.INSTANCE.readNoThrow(
-                        toProtobuf(groundTruth)));
+    @RequiredArgsConstructor
+    private static class MapperTestCase {
+        private final ByteArrayMapper<ArrayOfBeer> mapper;
+        private final String fileName;
+        private final boolean runAssert;
+
+        MapperTestCase(ByteArrayMapper<ArrayOfBeer> mapper, String fileName) {
+            this(mapper, fileName, true);
+        }
+
+        void writeToFile() {
+            try {
+                Files.write(Paths.get("target", fileName), mapper.writeNoThrow(GROUND_TRUTH), StandardOpenOption.CREATE);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        void convertAndAssert() {
+            if (runAssert) {
+                Assert.assertEquals(GROUND_TRUTH, mapper.readNoThrow(mapper.writeNoThrow(GROUND_TRUTH)));
+            }
+        }
     }
 
 }
