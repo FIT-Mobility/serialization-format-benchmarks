@@ -8,7 +8,6 @@ import de.fraunhofer.fit.cscw.mobility.sfb.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.protobuf.ProtobufByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.xml.JacksonXmlByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.xml.JaxbXmlByteArrayMapper;
-import de.fraunhofer.fit.cscw.mobility.sfb.xml.JaxbXmlStringMapper;
 import lombok.RequiredArgsConstructor;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -26,11 +25,6 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -38,18 +32,6 @@ import java.util.function.Function;
  * @author Fabian Ohler <fabian.ohler1@rwth-aachen.de>
  */
 public class Benchmarks {
-    private static final String xmlFile = readFile(Paths.get("src/main/resources", "beers.xml"));
-    private static final ArrayOfBeer groundTruth = new JaxbXmlStringMapper(false).readNoThrow(xmlFile);
-
-    private static String readFile(final Path path) {
-        final byte[] encoded;
-        try {
-            encoded = Files.readAllBytes(path);
-        } catch (IOException e) {
-            throw new Error(e);
-        }
-        return new String(encoded, StandardCharsets.UTF_8);
-    }
 
     @BenchmarkMode(Mode.AverageTime)
     @Fork(1)
@@ -66,7 +48,7 @@ public class Benchmarks {
 
         @Setup
         public void setup() {
-            model = converter.apply(groundTruth);
+            model = converter.apply(Utils.GROUND_TRUTH);
             bytes = mapper.writeNoThrow(model);
         }
 
