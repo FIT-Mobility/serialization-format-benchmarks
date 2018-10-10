@@ -102,36 +102,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.thrift.tools</groupId>
-                <artifactId>maven-thrift-plugin</artifactId>
-                <version>0.1.11</version>
-                <configuration>
-                    <thriftExecutable>/usr/local/bin/thrift</thriftExecutable>
-                    <thriftSourceRoot>${basedir}/src/main/thrift</thriftSourceRoot>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-thrift-java</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <generator>java</generator>
-                            <outputDirectory>${project.build.directory}/generated-sources/thrift</outputDirectory>
-                        </configuration>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>thrift-test-sources</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
