@@ -59,7 +59,6 @@ public class Benchmarks {
     @Measurement(iterations = 10, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
     @RequiredArgsConstructor
     public static abstract class AbstractBenchmark<BASEMODEL> {
-        final String fileNameAndSuffix;
         final Function<ArrayOfBeer, BASEMODEL> converter;
         final ByteArrayMapper<BASEMODEL> mapper;
         BASEMODEL model;
@@ -84,31 +83,31 @@ public class Benchmarks {
 
     public static class JaxbXmlBenchmark extends AbstractBenchmark<ArrayOfBeer> {
         public JaxbXmlBenchmark() {
-            super("jaxb.xml", Function.identity(), new JaxbXmlByteArrayMapper(false));
+            super(Function.identity(), new JaxbXmlByteArrayMapper(false));
         }
     }
 
     public static class JacksonXmlBenchmark extends AbstractBenchmark<ArrayOfBeer> {
         public JacksonXmlBenchmark() {
-            super("jackson.xml", Function.identity(), new JacksonXmlByteArrayMapper());
+            super(Function.identity(), new JacksonXmlByteArrayMapper());
         }
     }
 
     public static class JacksonJsonBenchmark extends AbstractBenchmark<ArrayOfBeer> {
         public JacksonJsonBenchmark() {
-            super("jackson.json", Function.identity(), new JacksonJsonByteArrayMapper());
+            super(Function.identity(), new JacksonJsonByteArrayMapper());
         }
     }
 
     public static class MessagePackBenchmark extends AbstractBenchmark<ArrayOfBeer> {
         public MessagePackBenchmark() {
-            super("msgpack", Function.identity(), new MessagePackByteArrayMapper());
+            super(Function.identity(), new MessagePackByteArrayMapper());
         }
     }
 
     public static class ProtobufBenchmark extends AbstractBenchmark<Protobuf.ArrayOfBeerType> {
         public ProtobufBenchmark() {
-            super("protobuf", ProtobufConverter.INSTANCE::convert, ProtobufByteArrayMapper.INSTANCE);
+            super(ProtobufConverter.INSTANCE::convert, ProtobufByteArrayMapper.INSTANCE);
         }
     }
 
