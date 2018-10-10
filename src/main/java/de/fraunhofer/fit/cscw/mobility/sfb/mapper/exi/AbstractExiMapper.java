@@ -4,14 +4,11 @@ import com.example.myschema.ArrayOfBeer;
 import com.siemens.ct.exi.core.CodingMode;
 import com.siemens.ct.exi.core.EXIFactory;
 import com.siemens.ct.exi.core.helpers.DefaultEXIFactory;
-import com.siemens.ct.exi.main.api.sax.EXIResult;
 import com.siemens.ct.exi.main.api.sax.EXISource;
 import com.siemens.ct.exi.main.api.sax.SAXEncoder;
 import com.siemens.ct.exi.main.api.sax.SAXFactory;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlByteArrayMapper;
 import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
