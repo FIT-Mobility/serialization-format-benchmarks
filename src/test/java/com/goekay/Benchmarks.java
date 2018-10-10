@@ -2,6 +2,7 @@ package com.goekay;
 
 import com.example.myschema.ArrayOfBeer;
 import com.goekay.json.JacksonJsonMapper;
+import com.goekay.msgpack.MessagePackMapper;
 import com.goekay.xml.JacksonXmlMapper;
 import com.goekay.xml.JaxbXmlMapper;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -39,8 +40,11 @@ public class Benchmarks {
     private JaxbXmlMapper jaxbXmlMapper;
     private JacksonXmlMapper jacksonXmlMapper;
 
+    private MessagePackMapper messagePackMapper;
+
     private String dataAsXmlString;
     private String dataAsJsonString;
+    private byte[] dataAsMsgPack;
 
     private ArrayOfBeer dataAsObject;
 
@@ -65,16 +69,20 @@ public class Benchmarks {
         jaxbXmlMapper = new JaxbXmlMapper(false);
         jacksonJsonMapper = new JacksonJsonMapper();
         jacksonXmlMapper = new JacksonXmlMapper();
+        messagePackMapper = new MessagePackMapper();
 
         dataAsObject = jaxbXmlMapper.readNoThrow(tmp);
         dataAsXmlString = jaxbXmlMapper.writeNoThrow(dataAsObject);
+        dataAsMsgPack = messagePackMapper.write(dataAsObject);
 
         dataAsJsonString = jacksonJsonMapper.writeNoThrow(dataAsObject);
         ArrayOfBeer dataAsObject2 = jacksonJsonMapper.readNoThrow(dataAsJsonString);
+        ArrayOfBeer dataAsObject3 = messagePackMapper.readNoThrow(dataAsMsgPack);
 
         Files.write(Paths.get("target", "data-jaxb.xml"), dataAsXmlString.getBytes(), StandardOpenOption.CREATE);
         Files.write(Paths.get("target", "data-jackson.json"), dataAsJsonString.getBytes(), StandardOpenOption.CREATE);
         Files.write(Paths.get("target", "data-jackson.xml"), jacksonXmlMapper.writeNoThrow(dataAsObject2).getBytes(), StandardOpenOption.CREATE);
+        Files.write(Paths.get("target", "data-msgpack"), messagePackMapper.writeNoThrow(dataAsObject3), StandardOpenOption.CREATE);
     }
 
     @Benchmark
@@ -105,6 +113,16 @@ public class Benchmarks {
     @Benchmark
     public void jacksonJsonMapperToString(Blackhole bh) {
         bh.consume(jacksonJsonMapper.writeNoThrow(dataAsObject));
+    }
+
+    @Benchmark
+    public void msgPackToObject(Blackhole bh) {
+        bh.consume(messagePackMapper.readNoThrow(dataAsMsgPack));
+    }
+
+    @Benchmark
+    public void msgPackToByteArray(Blackhole bh) {
+        bh.consume(messagePackMapper.writeNoThrow(dataAsObject));
     }
 
     private String readFile(Path path) throws IOException {
