@@ -1,22 +1,13 @@
 package com.goekay.xml;
 
 import com.example.myschema.ArrayOfBeer;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import com.goekay.StringMapper;
 
 /**
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 09.10.2018
  */
-public class JacksonXmlStringMapper implements StringMapper<ArrayOfBeer> {
-
-    final XmlMapper mapper = new XmlMapper();
-
-    public JacksonXmlStringMapper() {
-        mapper.setDefaultUseWrapper(false);
-        mapper.registerModule(new JaxbAnnotationModule());
-    }
+public class JacksonXmlStringMapper extends AbstractJacksonXmlMapper implements StringMapper<ArrayOfBeer> {
 
     @Override
     public ArrayOfBeer read(String str) throws Exception {

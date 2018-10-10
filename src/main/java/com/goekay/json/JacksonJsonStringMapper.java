@@ -1,10 +1,6 @@
 package com.goekay.json;
 
 import com.example.myschema.ArrayOfBeer;
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import com.goekay.StringMapper;
 
 import java.io.StringWriter;
@@ -13,20 +9,7 @@ import java.io.StringWriter;
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 09.10.2018
  */
-public class JacksonJsonStringMapper implements StringMapper<ArrayOfBeer> {
-
-    final ObjectMapper mapper;
-
-    public JacksonJsonStringMapper() {
-        mapper = new ObjectMapper();
-
-        mapper.setAnnotationIntrospector(
-                AnnotationIntrospector.pair(
-                        new JacksonAnnotationIntrospector(),
-                        new JaxbAnnotationIntrospector(mapper.getTypeFactory())
-                )
-        );
-    }
+public class JacksonJsonStringMapper extends AbstractJacksonJsonMapper implements StringMapper<ArrayOfBeer> {
 
     @Override
     public ArrayOfBeer read(String str) throws Exception {
