@@ -6,7 +6,8 @@ import com.goekay.ByteArrayMapper;
 /**
  * @author Fabian Ohler <fabian.ohler1@rwth-aachen.de>
  */
-public class ProtobufMapper implements ByteArrayMapper<ArrayOfBeerType> {
+public class ProtobufByteArrayMapper implements ByteArrayMapper<ArrayOfBeerType> {
+
     @Override
     public ArrayOfBeerType read(final byte[] data) throws Exception {
         return ArrayOfBeerType.parseFrom(data);
