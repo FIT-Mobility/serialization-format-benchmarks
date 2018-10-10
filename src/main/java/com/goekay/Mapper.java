@@ -2,27 +2,29 @@ package com.goekay;
 
 /**
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
- * @since 09.10.2018
+ * @since 10.10.2018
  */
-public interface Mapper<T> {
+public interface Mapper<POJO, SERIALIZATION_FORMAT> {
 
-    T read(String str) throws Exception;
+    POJO read(SERIALIZATION_FORMAT data) throws Exception;
 
-    String write(T obj) throws Exception;
+    SERIALIZATION_FORMAT write(POJO obj) throws Exception;
 
-    default T readNoThrow(String str) {
+    default POJO readNoThrow(SERIALIZATION_FORMAT data) {
         try {
-            return read(str);
+            return read(data);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    default String writeNoThrow(T obj) {
+    default SERIALIZATION_FORMAT writeNoThrow(POJO obj) {
         try {
             return write(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+
 }

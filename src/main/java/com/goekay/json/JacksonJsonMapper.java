@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
-import com.goekay.Mapper;
+import com.goekay.StringMapper;
 
 import java.io.StringWriter;
 
@@ -13,7 +13,7 @@ import java.io.StringWriter;
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 09.10.2018
  */
-public class JacksonJsonMapper implements Mapper<ArrayOfBeer> {
+public class JacksonJsonMapper implements StringMapper<ArrayOfBeer> {
 
     private final ObjectMapper mapper;
 

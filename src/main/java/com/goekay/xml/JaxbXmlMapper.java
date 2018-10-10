@@ -1,7 +1,7 @@
 package com.goekay.xml;
 
 import com.example.myschema.ArrayOfBeer;
-import com.goekay.Mapper;
+import com.goekay.StringMapper;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -20,7 +20,7 @@ import java.net.URL;
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 09.10.2018
  */
-public class JaxbXmlMapper implements Mapper<ArrayOfBeer> {
+public class JaxbXmlMapper implements StringMapper<ArrayOfBeer> {
 
     private final JAXBContext jaxbContext;
     private final Schema schema;
