@@ -38,7 +38,7 @@ public class SanityChecks {
                 new MapperTestCase(new JacksonJsonByteArrayMapper(), "data-jackson.json"),
                 new MapperTestCase(new InternalProtobufMapper(), "proto-buf"),
                 new MapperTestCase(new MessagePackByteArrayMapper(), "message-pack"),
-                new MapperTestCase(new EXIficientByteArrayMapper(), "data-exificient", false)
+                new MapperTestCase(new EXIficientByteArrayMapper(), "data-exificient", true)
         );
 
         cases.forEach(MapperTestCase::writeToFile);
