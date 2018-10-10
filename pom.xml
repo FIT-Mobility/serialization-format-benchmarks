@@ -31,27 +31,27 @@
             </plugin>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>2.4</version>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.14.0</version>
                 <executions>
                     <execution>
-                        <id>xjc</id>
                         <goals>
-                            <goal>xjc</goal>
+                            <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <sources>
-                        <source>src/main/resources/beers.xsd</source>
-                    </sources>
-                    <xjbSources>
-                        <source>src/main/resources/bindings.xjb</source>
-                    </xjbSources>
-
+                    <bindingDirectory>
+                        src/main/resources
+                    </bindingDirectory>
+                    <schemaDirectory>
+                        src/main/resources
+                    </schemaDirectory>
+                    <generatePackage>
+                        com.example.myschema
+                    </generatePackage>
                     <extension>true</extension>
-                    <packageName>com.example.myschema</packageName>
                 </configuration>
 
                 <dependencies>
