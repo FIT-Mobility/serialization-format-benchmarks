@@ -1,10 +1,10 @@
 package com.goekay;
 
 import com.example.myschema.ArrayOfBeer;
-import com.goekay.json.JacksonJsonMapper;
-import com.goekay.msgpack.MessagePackMapper;
-import com.goekay.xml.JacksonXmlMapper;
-import com.goekay.xml.JaxbXmlMapper;
+import com.goekay.json.JacksonJsonStringMapper;
+import com.goekay.msgpack.MessagePackByteArrayMapper;
+import com.goekay.xml.JacksonXmlStringMapper;
+import com.goekay.xml.JaxbXmlStringMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,10 +24,10 @@ public class SanityChecks {
     public void testIfEqual() throws Exception {
         String data = readFile(Paths.get("src/main/resources", "beers.xml"));
 
-        JaxbXmlMapper jaxbXmlMapper = new JaxbXmlMapper(false);
-        JacksonXmlMapper jacksonXmlMapper = new JacksonXmlMapper();
-        JacksonJsonMapper jacksonJsonMapper = new JacksonJsonMapper();
-        MessagePackMapper messagePackMapper = new MessagePackMapper();
+        JaxbXmlStringMapper jaxbXmlMapper = new JaxbXmlStringMapper(false);
+        JacksonXmlStringMapper jacksonXmlMapper = new JacksonXmlStringMapper();
+        JacksonJsonStringMapper jacksonJsonMapper = new JacksonJsonStringMapper();
+        MessagePackByteArrayMapper messagePackMapper = new MessagePackByteArrayMapper();
 
         ArrayOfBeer data1 = jaxbXmlMapper.read(data);
         ArrayOfBeer data2 = jacksonXmlMapper.read(data);
