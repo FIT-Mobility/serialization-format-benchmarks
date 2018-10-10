@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+package com.example.myschema;
+
+option java_package = "com.example.myproto";
+option java_outer_classname = "Protobuf";
+
+message ArrayOfBeerType {
+	message BeerType {
+		message SortType {
+			repeated string string = 1;
+		}
+		required string Brand = 1;
+		required SortType Sort = 2;
+		required string Alcohol = 3;
+		required string Brewery = 4;
+	}
+	repeated BeerType Beer = 1;
+}
