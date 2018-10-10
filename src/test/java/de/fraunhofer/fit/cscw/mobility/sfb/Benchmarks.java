@@ -2,6 +2,7 @@ package de.fraunhofer.fit.cscw.mobility.sfb;
 
 import com.example.myproto.Protobuf;
 import com.example.myschema.ArrayOfBeer;
+import de.fraunhofer.fit.cscw.mobility.sfb.compress.GzipCompressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.protobuf.ProtobufConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
@@ -62,6 +63,11 @@ public class Benchmarks {
         @Benchmark
         public void benchToByteArray(final Blackhole bh) {
             bh.consume(mapper.writeNoThrow(model));
+        }
+
+        @Benchmark
+        public void benchToByteArrayAndGzipCompress(final Blackhole bh) {
+            bh.consume(GzipCompressor.INSTANCE.compress(mapper.writeNoThrow(model)));
         }
     }
 
