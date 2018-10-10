@@ -1,6 +1,6 @@
 package com.goekay.json;
 
-import com.example.myschema.ArrayOfBeerType;
+import com.example.myschema.ArrayOfBeer;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
@@ -13,7 +13,7 @@ import java.io.StringWriter;
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 09.10.2018
  */
-public class JacksonJsonMapper implements Mapper<ArrayOfBeerType> {
+public class JacksonJsonMapper implements Mapper<ArrayOfBeer> {
 
     private final ObjectMapper mapper;
 
@@ -29,12 +29,12 @@ public class JacksonJsonMapper implements Mapper<ArrayOfBeerType> {
     }
 
     @Override
-    public ArrayOfBeerType read(String str) throws Exception {
-        return mapper.readValue(str, ArrayOfBeerType.class);
+    public ArrayOfBeer read(String str) throws Exception {
+        return mapper.readValue(str, ArrayOfBeer.class);
     }
 
     @Override
-    public String write(ArrayOfBeerType obj) throws Exception {
+    public String write(ArrayOfBeer obj) throws Exception {
         StringWriter stringWriter = new StringWriter();
         mapper.writeValue(stringWriter, obj);
         return stringWriter.toString();

@@ -1,13 +1,12 @@
 package com.goekay.xml;
 
-import com.example.myschema.ArrayOfBeerType;
+import com.example.myschema.ArrayOfBeer;
 import com.example.myschema.ObjectFactory;
 import com.goekay.Mapper;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -22,7 +21,7 @@ import java.net.URL;
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 09.10.2018
  */
-public class JaxbXmlMapper implements Mapper<ArrayOfBeerType> {
+public class JaxbXmlMapper implements Mapper<ArrayOfBeer> {
 
     private final JAXBContext jaxbContext;
     private final ObjectFactory objectFactory;
@@ -34,7 +33,7 @@ public class JaxbXmlMapper implements Mapper<ArrayOfBeerType> {
 
         try {
             // is thread-safe
-            jaxbContext = JAXBContext.newInstance(ArrayOfBeerType.class);
+            jaxbContext = JAXBContext.newInstance(ArrayOfBeer.class);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
@@ -56,17 +55,16 @@ public class JaxbXmlMapper implements Mapper<ArrayOfBeerType> {
     }
 
     @Override
-    public ArrayOfBeerType read(String str) throws Exception {
+    public ArrayOfBeer read(String str) throws Exception {
         Unmarshaller um = jaxbContext.createUnmarshaller();
         if (validate) {
             um.setSchema(schema);
         }
-        return um.unmarshal(new StreamSource(new StringReader(str)), ArrayOfBeerType.class).getValue();
+        return um.unmarshal(new StreamSource(new StringReader(str)), ArrayOfBeer.class).getValue();
     }
 
     @Override
-    public String write(ArrayOfBeerType obj) throws Exception {
-        JAXBElement<ArrayOfBeerType> outgoing = objectFactory.createArrayOfBeer(obj);
+    public String write(ArrayOfBeer obj) throws Exception {
         Marshaller m = jaxbContext.createMarshaller();
 
         if (validate) {
@@ -80,7 +78,7 @@ public class JaxbXmlMapper implements Mapper<ArrayOfBeerType> {
         m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 
         StringWriter stringWriter = new StringWriter();
-        m.marshal(outgoing, stringWriter);
+        m.marshal(obj, stringWriter);
         return stringWriter.toString();
     }
 }

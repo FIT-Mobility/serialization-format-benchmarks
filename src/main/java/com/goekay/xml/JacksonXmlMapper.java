@@ -1,6 +1,6 @@
 package com.goekay.xml;
 
-import com.example.myschema.ArrayOfBeerType;
+import com.example.myschema.ArrayOfBeer;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import com.goekay.Mapper;
@@ -9,7 +9,7 @@ import com.goekay.Mapper;
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>
  * @since 09.10.2018
  */
-public class JacksonXmlMapper implements Mapper<ArrayOfBeerType> {
+public class JacksonXmlMapper implements Mapper<ArrayOfBeer> {
 
     private final XmlMapper mapper = new XmlMapper();
 
@@ -19,12 +19,12 @@ public class JacksonXmlMapper implements Mapper<ArrayOfBeerType> {
     }
 
     @Override
-    public ArrayOfBeerType read(String str) throws Exception {
-        return mapper.readValue(str, ArrayOfBeerType.class);
+    public ArrayOfBeer read(String str) throws Exception {
+        return mapper.readValue(str, ArrayOfBeer.class);
     }
 
     @Override
-    public String write(ArrayOfBeerType obj) throws Exception {
+    public String write(ArrayOfBeer obj) throws Exception {
         return mapper.writeValueAsString(obj);
     }
 }

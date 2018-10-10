@@ -1,6 +1,6 @@
 package com.goekay;
 
-import com.example.myschema.ArrayOfBeerType;
+import com.example.myschema.ArrayOfBeer;
 import com.goekay.json.JacksonJsonMapper;
 import com.goekay.xml.JacksonXmlMapper;
 import com.goekay.xml.JaxbXmlMapper;
@@ -42,7 +42,7 @@ public class Benchmarks {
     private String dataAsXmlString;
     private String dataAsJsonString;
 
-    private ArrayOfBeerType dataAsObject;
+    private ArrayOfBeer dataAsObject;
 
     /**
      * Main method to run benchmark
@@ -70,7 +70,7 @@ public class Benchmarks {
         dataAsXmlString = jaxbXmlMapper.writeNoThrow(dataAsObject);
 
         dataAsJsonString = jacksonJsonMapper.writeNoThrow(dataAsObject);
-        ArrayOfBeerType dataAsObject2 = jacksonJsonMapper.readNoThrow(dataAsJsonString);
+        ArrayOfBeer dataAsObject2 = jacksonJsonMapper.readNoThrow(dataAsJsonString);
 
         Files.write(Paths.get("target", "data-jaxb.xml"), dataAsXmlString.getBytes(), StandardOpenOption.CREATE);
         Files.write(Paths.get("target", "data-jackson.json"), dataAsJsonString.getBytes(), StandardOpenOption.CREATE);
