@@ -2,6 +2,7 @@ package de.fraunhofer.fit.cscw.mobility.sfb;
 
 import com.example.myproto.Protobuf;
 import com.example.myschema.ArrayOfBeer;
+import de.fraunhofer.fit.cscw.mobility.sfb.compress.GzipCompressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.protobuf.ProtobufConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
@@ -41,6 +42,7 @@ public class SanityChecks {
         );
 
         cases.forEach(MapperTestCase::writeToFile);
+        cases.forEach(MapperTestCase::writeToFileCompressed);
         cases.forEach(MapperTestCase::convertAndAssert);
     }
 
@@ -70,16 +72,24 @@ public class SanityChecks {
         }
 
         void writeToFile() {
-            try {
-                Files.write(Paths.get("target", fileName), mapper.writeNoThrow(GROUND_TRUTH), StandardOpenOption.CREATE);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            write(fileName, mapper.writeNoThrow(GROUND_TRUTH));
+        }
+
+        void writeToFileCompressed() {
+            write(fileName + ".gz", GzipCompressor.INSTANCE.compress(mapper.writeNoThrow(GROUND_TRUTH)));
         }
 
         void convertAndAssert() {
             if (runAssert) {
                 Assert.assertEquals(GROUND_TRUTH, mapper.readNoThrow(mapper.writeNoThrow(GROUND_TRUTH)));
+            }
+        }
+
+        private static void write(String name, byte[] data) {
+            try {
+                Files.write(Paths.get("target", name), data, StandardOpenOption.CREATE);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
