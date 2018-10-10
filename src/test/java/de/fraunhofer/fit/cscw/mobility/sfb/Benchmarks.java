@@ -4,6 +4,7 @@ import com.example.myproto.Protobuf;
 import com.example.myschema.ArrayOfBeer;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.protobuf.ProtobufConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
@@ -91,6 +92,12 @@ public class Benchmarks {
     public static class ProtobufBenchmark extends AbstractBenchmark<Protobuf.ArrayOfBeerType> {
         public ProtobufBenchmark() {
             super(ProtobufConverter.INSTANCE::convert, ProtobufByteArrayMapper.INSTANCE);
+        }
+    }
+
+    public static class EXIficientBenchmark extends AbstractBenchmark<ArrayOfBeer> {
+        public EXIficientBenchmark() {
+            super(Function.identity(), new EXIficientByteArrayMapper());
         }
     }
 

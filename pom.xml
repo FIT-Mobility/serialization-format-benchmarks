@@ -19,6 +19,7 @@
         <msgpack.version>0.6.12</msgpack.version>
         <org.jvnet.jaxb2_commons.version>0.12.0</org.jvnet.jaxb2_commons.version>
         <protobuf.version>3.6.1</protobuf.version>
+        <exificient.version>1.0.1</exificient.version>
     </properties>
 
     <build>
@@ -101,6 +102,36 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.thrift.tools</groupId>
+                <artifactId>maven-thrift-plugin</artifactId>
+                <version>0.1.11</version>
+                <configuration>
+                    <thriftExecutable>/usr/local/bin/thrift</thriftExecutable>
+                    <thriftSourceRoot>${basedir}/src/main/thrift</thriftSourceRoot>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-thrift-java</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <generator>java</generator>
+                            <outputDirectory>${project.build.directory}/generated-sources/thrift</outputDirectory>
+                        </configuration>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>thrift-test-sources</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -151,6 +182,11 @@
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>${protobuf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.siemens.ct.exi</groupId>
+            <artifactId>exificient</artifactId>
+            <version>${exificient.version}</version>
         </dependency>
 
         <dependency>

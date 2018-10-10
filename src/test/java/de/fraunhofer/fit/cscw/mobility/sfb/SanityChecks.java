@@ -2,6 +2,7 @@ package de.fraunhofer.fit.cscw.mobility.sfb;
 
 import com.example.myschema.ArrayOfBeer;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.protobuf.ProtobufConverter;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonStringMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
@@ -26,6 +27,7 @@ public class SanityChecks {
         JacksonXmlStringMapper jacksonXmlMapper = new JacksonXmlStringMapper();
         JacksonJsonStringMapper jacksonJsonMapper = new JacksonJsonStringMapper();
         MessagePackByteArrayMapper messagePackMapper = new MessagePackByteArrayMapper();
+        EXIficientByteArrayMapper exificientMapper = new EXIficientByteArrayMapper();
 
         ArrayOfBeer groundTruth = Utils.GROUND_TRUTH;
         String xmlFile = Utils.XML_FILE;
@@ -34,11 +36,13 @@ public class SanityChecks {
         Files.write(Paths.get("target", "data-jackson.xml"), jacksonXmlMapper.writeNoThrow(groundTruth).getBytes(), StandardOpenOption.CREATE);
         Files.write(Paths.get("target", "data-jackson.json"), jacksonJsonMapper.writeNoThrow(groundTruth).getBytes(), StandardOpenOption.CREATE);
         Files.write(Paths.get("target", "message-pack"), messagePackMapper.writeNoThrow(groundTruth), StandardOpenOption.CREATE);
+        Files.write(Paths.get("target", "data-exificient"), exificientMapper.write(groundTruth), StandardOpenOption.CREATE);
         Files.write(Paths.get("target", "proto-buf"), toProtobuf(groundTruth), StandardOpenOption.CREATE);
 
         Assert.assertEquals(groundTruth, jacksonXmlMapper.read(xmlFile));
         Assert.assertEquals(groundTruth, jacksonJsonMapper.read(jacksonJsonMapper.write(groundTruth)));
         Assert.assertEquals(groundTruth, messagePackMapper.read(messagePackMapper.write(groundTruth)));
+        Assert.assertEquals(groundTruth, exificientMapper.read(exificientMapper.write(groundTruth)));
         Assert.assertEquals(groundTruth, toProtobufAndBack(groundTruth));
     }
 
