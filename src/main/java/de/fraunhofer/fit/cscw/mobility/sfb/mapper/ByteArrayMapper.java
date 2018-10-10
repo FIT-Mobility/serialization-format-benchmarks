@@ -1,4 +1,4 @@
-package de.fraunhofer.fit.cscw.mobility.sfb;
+package de.fraunhofer.fit.cscw.mobility.sfb.mapper;
 
 /**
  * @author Sevket Goekay <goekay@dbis.rwth-aachen.de>

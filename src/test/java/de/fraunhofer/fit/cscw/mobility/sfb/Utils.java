@@ -1,7 +1,7 @@
 package de.fraunhofer.fit.cscw.mobility.sfb;
 
 import com.example.myschema.ArrayOfBeer;
-import de.fraunhofer.fit.cscw.mobility.sfb.xml.JaxbXmlStringMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JaxbXmlStringMapper;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

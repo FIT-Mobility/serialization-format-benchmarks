@@ -2,11 +2,11 @@ package de.fraunhofer.fit.cscw.mobility.sfb;
 
 import com.example.myschema.ArrayOfBeer;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.protobuf.ProtobufConverter;
-import de.fraunhofer.fit.cscw.mobility.sfb.json.JacksonJsonStringMapper;
-import de.fraunhofer.fit.cscw.mobility.sfb.msgpack.MessagePackByteArrayMapper;
-import de.fraunhofer.fit.cscw.mobility.sfb.protobuf.ProtobufByteArrayMapper;
-import de.fraunhofer.fit.cscw.mobility.sfb.xml.JacksonXmlStringMapper;
-import de.fraunhofer.fit.cscw.mobility.sfb.xml.JaxbXmlStringMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonStringMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlStringMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JaxbXmlStringMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
