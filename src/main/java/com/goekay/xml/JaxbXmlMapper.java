@@ -1,7 +1,6 @@
 package com.goekay.xml;
 
 import com.example.myschema.ArrayOfBeer;
-import com.example.myschema.ObjectFactory;
 import com.goekay.Mapper;
 import org.xml.sax.SAXException;
 
@@ -24,7 +23,6 @@ import java.net.URL;
 public class JaxbXmlMapper implements Mapper<ArrayOfBeer> {
 
     private final JAXBContext jaxbContext;
-    private final ObjectFactory objectFactory;
     private final Schema schema;
     private final boolean validate;
 
@@ -37,8 +35,6 @@ public class JaxbXmlMapper implements Mapper<ArrayOfBeer> {
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
-
-        objectFactory = new ObjectFactory();
 
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         URL xsdURL = getClass().getClassLoader().getResource("beers.xsd");
