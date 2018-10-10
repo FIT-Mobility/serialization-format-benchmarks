@@ -11,7 +11,7 @@ import com.goekay.StringMapper;
  */
 public class JacksonXmlMapper implements StringMapper<ArrayOfBeer> {
 
-    private final XmlMapper mapper = new XmlMapper();
+    final XmlMapper mapper = new XmlMapper();
 
     public JacksonXmlMapper() {
         mapper.setDefaultUseWrapper(false);
