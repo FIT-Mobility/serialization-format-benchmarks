@@ -19,12 +19,7 @@ public enum GzipCompressor implements Compressor {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             try (ByteArrayInputStream bis = new ByteArrayInputStream(data);
                  GZIPOutputStream gzipOS = new GZIPOutputStream(bos)) {
-
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = bis.read(buffer)) != -1) {
-                    gzipOS.write(buffer, 0, len);
-                }
+                bis.transferTo(gzipOS);
             }
             return bos.toByteArray();
         } catch (IOException e) {
@@ -38,12 +33,7 @@ public enum GzipCompressor implements Compressor {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             try (ByteArrayInputStream bis = new ByteArrayInputStream(data);
                  GZIPInputStream gzipIS = new GZIPInputStream(bis)) {
-
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = gzipIS.read(buffer)) != -1) {
-                    bos.write(buffer, 0, len);
-                }
+                gzipIS.transferTo(bos);
             }
             return bos.toByteArray();
         } catch (IOException e) {
