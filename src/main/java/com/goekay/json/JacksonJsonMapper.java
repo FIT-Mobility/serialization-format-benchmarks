@@ -15,7 +15,7 @@ import java.io.StringWriter;
  */
 public class JacksonJsonMapper implements StringMapper<ArrayOfBeer> {
 
-    private final ObjectMapper mapper;
+    final ObjectMapper mapper;
 
     public JacksonJsonMapper() {
         mapper = new ObjectMapper();
