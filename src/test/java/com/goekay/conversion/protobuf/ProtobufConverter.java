@@ -10,7 +10,9 @@ import com.google.common.collect.Iterables;
 /**
  * @author Fabian Ohler <fabian.ohler1@rwth-aachen.de>
  */
-public class ProtobufConverter implements Converter<ArrayOfBeer, Protobuf.ArrayOfBeerType> {
+public enum ProtobufConverter implements Converter<ArrayOfBeer, Protobuf.ArrayOfBeerType> {
+    INSTANCE;
+
     @Override
     public Protobuf.ArrayOfBeerType convert(final ArrayOfBeer arrayOfBeer) {
         return Protobuf.ArrayOfBeerType.newBuilder()
