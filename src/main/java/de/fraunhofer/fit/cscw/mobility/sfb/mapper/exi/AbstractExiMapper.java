@@ -7,7 +7,7 @@ import com.siemens.ct.exi.core.helpers.DefaultEXIFactory;
 import com.siemens.ct.exi.main.api.sax.EXISource;
 import com.siemens.ct.exi.main.api.sax.SAXEncoder;
 import com.siemens.ct.exi.main.api.sax.SAXFactory;
-import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JaxbXmlByteArrayMapper;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.SAXParser;
@@ -25,15 +25,16 @@ import java.io.OutputStream;
  */
 public abstract class AbstractExiMapper {
 
-    private final JacksonXmlByteArrayMapper xmlMapper = new JacksonXmlByteArrayMapper();
-    private final EXIFactory exiFactory = DefaultEXIFactory.newInstance();
+    private static final JaxbXmlByteArrayMapper xmlMapper = new JaxbXmlByteArrayMapper(false);
+    private static final EXIFactory exiFactory = DefaultEXIFactory.newInstance();
+    private static final TransformerFactory tf = TransformerFactory.newInstance();
+    private static final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
-    AbstractExiMapper() {
+    static {
         exiFactory.setCodingMode(CodingMode.COMPRESSION);
     }
 
     ArrayOfBeer read(InputSource source) throws Exception {
-        final TransformerFactory tf = TransformerFactory.newInstance();
         final Transformer transformer = tf.newTransformer();
 
         final SAXSource exiSource = new EXISource(exiFactory);
@@ -45,7 +46,6 @@ public abstract class AbstractExiMapper {
     }
 
     void write(ArrayOfBeer obj, OutputStream out) throws Exception {
-        final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         final SAXParser saxParser = saxParserFactory.newSAXParser();
         final SAXEncoder exiWriter = new SAXFactory(exiFactory).createEXIWriter();
         exiWriter.setOutputStream(out);
