@@ -9,8 +9,6 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <thrift.install.path>/usr/local/opt/thrift</thrift.install.path>
-
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -115,8 +113,8 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <generator>java</generator>
+                            <thriftSourceRoot>${project.basedir}/src/main/resources</thriftSourceRoot>
                             <outputDirectory>${project.build.directory}/generated-sources/thrift</outputDirectory>
-                            <thriftExecutable>${thrift.install.path}/bin/thrift</thriftExecutable>
                         </configuration>
                         <goals>
                             <goal>compile</goal>
