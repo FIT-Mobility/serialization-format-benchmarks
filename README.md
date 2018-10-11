@@ -20,6 +20,13 @@ Thrift is a special case, because its code generator maven plugin expects the pa
 Make sure it is installed.
 
 
+# Test cases
+
+- Byte array (in memory) to Java Object
+- Java Object to Byte array (in memory)
+- Java Object to Byte array (in memory, compressed with gzip)
+
+
 # System Requirements
 
 * JDK 11
