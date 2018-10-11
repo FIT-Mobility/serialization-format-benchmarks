@@ -6,6 +6,7 @@ The sample data is taken from [here](https://github.com/maximn/SerializationPerf
 
 # Formats
 
+- Cap’n Proto
 - EXI
 - Fast Infoset
 - Json (using Jackson)
