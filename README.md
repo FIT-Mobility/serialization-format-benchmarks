@@ -7,12 +7,12 @@ The sample data is taken from [here](https://github.com/maximn/SerializationPerf
 # Formats
 
 - EXI
-- FastInfoSet
+- Fast Infoset
 - Json (using Jackson)
 - MessagePack
 - Protocol Buffers
 - Apache Thrift
-- XML (using Jaxb and Jackson)
+- XML (using JAXB and Jackson)
 
 ### Thrift preparation
 
