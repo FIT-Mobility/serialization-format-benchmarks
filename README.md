@@ -14,12 +14,13 @@ The sample data is taken from [here](https://github.com/maximn/SerializationPerf
 - Apache Thrift
 - XML (using Jaxb and Jackson)
 
-# Thrift preparation
+### Thrift preparation
 
 Thrift is a special case, because its code generator maven plugin expects the path of an installed Thrift library.
+Make sure it is installed.
 
 
-## System Requirements
+# System Requirements
 
 * JDK 11
 * Maven 
