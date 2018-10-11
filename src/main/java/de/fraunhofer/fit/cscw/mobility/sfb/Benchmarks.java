@@ -3,6 +3,7 @@ package de.fraunhofer.fit.cscw.mobility.sfb;
 import com.example.myproto.Protobuf;
 import com.example.myschema.ArrayOfBeer;
 import com.example.thrift.ArrayOfBeerType;
+import de.fraunhofer.fit.cscw.mobility.sfb.compress.Compressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.compress.GzipCompressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.ProtobufConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.ThriftConverter;
@@ -40,6 +41,8 @@ import java.util.function.Function;
  */
 public class Benchmarks {
 
+    private static final Compressor COMPRESSOR = GzipCompressor.INSTANCE;
+
     @BenchmarkMode(Mode.AverageTime)
     @Fork(1)
     @State(Scope.Thread)
@@ -52,26 +55,33 @@ public class Benchmarks {
         final ByteArrayMapper<BASEMODEL> mapper;
         BASEMODEL model;
         byte[] bytes;
+        byte[] compressedBytes;
 
         @Setup
         public void setup() {
             model = converter.apply(Utils.GROUND_TRUTH);
             bytes = mapper.writeNoThrow(model);
+            compressedBytes = COMPRESSOR.compress(bytes);
         }
 
         @Benchmark
-        public void benchToObject(final Blackhole bh) {
+        public void bytesToObject(final Blackhole bh) {
             bh.consume(mapper.readNoThrow(bytes));
         }
 
         @Benchmark
-        public void benchToByteArray(final Blackhole bh) {
+        public void compressedBytesToObject(final Blackhole bh) {
+            bh.consume(mapper.readNoThrow(COMPRESSOR.decompress(compressedBytes)));
+        }
+
+        @Benchmark
+        public void objectToBytes(final Blackhole bh) {
             bh.consume(mapper.writeNoThrow(model));
         }
 
         @Benchmark
-        public void benchToByteArrayAndGzipCompress(final Blackhole bh) {
-            bh.consume(GzipCompressor.INSTANCE.compress(mapper.writeNoThrow(model)));
+        public void objectToCompressedBytes(final Blackhole bh) {
+            bh.consume(COMPRESSOR.compress(mapper.writeNoThrow(model)));
         }
     }
 

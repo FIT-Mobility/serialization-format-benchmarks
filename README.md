@@ -23,6 +23,7 @@ Make sure it is installed.
 # Test cases
 
 - Byte array (in memory) to Java Object
+- Byte array (in memory, compressed with gzip) to Java Object
 - Java Object to Byte array (in memory)
 - Java Object to Byte array (in memory, compressed with gzip)
 
