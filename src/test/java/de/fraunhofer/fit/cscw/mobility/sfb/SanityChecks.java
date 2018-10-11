@@ -6,6 +6,7 @@ import de.fraunhofer.fit.cscw.mobility.sfb.compress.GzipCompressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.protobuf.ProtobufConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.fastinfoset.FastInfosetByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
@@ -38,7 +39,8 @@ public class SanityChecks {
                 new MapperTestCase(new JacksonJsonByteArrayMapper(), "data-jackson.json"),
                 new MapperTestCase(new InternalProtobufMapper(), "proto-buf"),
                 new MapperTestCase(new MessagePackByteArrayMapper(), "message-pack"),
-                new MapperTestCase(new EXIficientByteArrayMapper(), "data-exificient", true)
+                new MapperTestCase(new EXIficientByteArrayMapper(), "data-exificient", true),
+                new MapperTestCase(new FastInfosetByteArrayMapper(false), "data-fastInfoset", true)
         );
 
         cases.forEach(MapperTestCase::writeToFile);

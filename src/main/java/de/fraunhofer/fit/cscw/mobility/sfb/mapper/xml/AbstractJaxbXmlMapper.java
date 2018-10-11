@@ -20,10 +20,10 @@ import java.net.URL;
  */
 public abstract class AbstractJaxbXmlMapper {
 
-    static final JAXBContext jaxbContext;
-    static final Schema schema;
+    protected static final JAXBContext jaxbContext;
+    protected static final Schema schema;
 
-    private final boolean validate;
+    protected final boolean validate;
 
     static {
         try {
@@ -47,7 +47,7 @@ public abstract class AbstractJaxbXmlMapper {
         }
     }
 
-    AbstractJaxbXmlMapper(boolean validate) {
+    protected AbstractJaxbXmlMapper(boolean validate) {
         this.validate = validate;
     }
 
