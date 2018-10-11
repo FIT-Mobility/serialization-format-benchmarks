@@ -4,12 +4,14 @@ import com.example.myproto.Protobuf;
 import com.example.myschema.ArrayOfBeer;
 import de.fraunhofer.fit.cscw.mobility.sfb.compress.GzipCompressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.protobuf.ProtobufConverter;
+import de.fraunhofer.fit.cscw.mobility.sfb.conversion.thrift.ThriftConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.fastinfoset.FastInfosetByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.thrift.ThriftByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JaxbXmlByteArrayMapper;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +42,8 @@ public class SanityChecks {
                 new MapperTestCase(new InternalProtobufMapper(), "proto-buf"),
                 new MapperTestCase(new MessagePackByteArrayMapper(), "message-pack"),
                 new MapperTestCase(new EXIficientByteArrayMapper(), "data-exificient", true),
-                new MapperTestCase(new FastInfosetByteArrayMapper(false), "data-fastInfoset", true)
+                new MapperTestCase(new FastInfosetByteArrayMapper(false), "data-fastInfoset", true),
+                new MapperTestCase(new InternalThriftMapper(), "thrift")
         );
 
         cases.forEach(MapperTestCase::writeToFile);
@@ -60,6 +63,21 @@ public class SanityChecks {
         public byte[] write(ArrayOfBeer obj) throws Exception {
             Protobuf.ArrayOfBeerType convert = ProtobufConverter.INSTANCE.convert(obj);
             return ProtobufByteArrayMapper.INSTANCE.write(convert);
+        }
+    }
+
+    private static class InternalThriftMapper implements ByteArrayMapper<ArrayOfBeer> {
+
+        private final ThriftByteArrayMapper mapper = new ThriftByteArrayMapper();
+
+        @Override
+        public ArrayOfBeer read(byte[] data) throws Exception {
+            return ThriftConverter.INSTANCE.convertBack(mapper.read(data));
+        }
+
+        @Override
+        public byte[] write(ArrayOfBeer obj) throws Exception {
+            return mapper.write(ThriftConverter.INSTANCE.convert(obj));
         }
     }
 
