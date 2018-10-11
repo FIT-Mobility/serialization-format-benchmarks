@@ -8,6 +8,7 @@ import de.fraunhofer.fit.cscw.mobility.sfb.compress.GzipCompressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.ProtobufConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.ThriftConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.capnproto.CapnProtoByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.fastinfoset.FastInfosetByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonByteArrayMapper;
@@ -130,6 +131,12 @@ public class Benchmarks {
     public static class FastInfosetBenchmark extends AbstractBenchmark<ArrayOfBeer> {
         public FastInfosetBenchmark() {
             super(Function.identity(), new FastInfosetByteArrayMapper(false));
+        }
+    }
+
+    public static class CapnProtoBenchmark extends AbstractBenchmark<ArrayOfBeer> {
+        public CapnProtoBenchmark() {
+            super(Function.identity(), new CapnProtoByteArrayMapper());
         }
     }
 
