@@ -2,13 +2,16 @@ package de.fraunhofer.fit.cscw.mobility.sfb;
 
 import com.example.myproto.Protobuf;
 import com.example.myschema.ArrayOfBeer;
+import com.example.thrift.ArrayOfBeerType;
 import de.fraunhofer.fit.cscw.mobility.sfb.compress.GzipCompressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.protobuf.ProtobufConverter;
+import de.fraunhofer.fit.cscw.mobility.sfb.conversion.thrift.ThriftConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.thrift.ThriftByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JaxbXmlByteArrayMapper;
 import lombok.RequiredArgsConstructor;
@@ -98,6 +101,12 @@ public class Benchmarks {
     public static class ProtobufBenchmark extends AbstractBenchmark<Protobuf.ArrayOfBeerType> {
         public ProtobufBenchmark() {
             super(ProtobufConverter.INSTANCE::convert, ProtobufByteArrayMapper.INSTANCE);
+        }
+    }
+
+    public static class ThriftBenchmark extends AbstractBenchmark<ArrayOfBeerType> {
+        public ThriftBenchmark() {
+            super(ThriftConverter.INSTANCE::convert, new ThriftByteArrayMapper());
         }
     }
 

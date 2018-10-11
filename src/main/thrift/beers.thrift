@@ -1,3 +1,5 @@
+namespace java com.example.thrift
+
 struct SortType
 {
 	1 : optional list<string> _string,

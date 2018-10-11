@@ -9,6 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <thrift.install.path>/usr/local/opt/thrift</thrift.install.path>
+
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -114,7 +116,7 @@
                         <configuration>
                             <generator>java</generator>
                             <outputDirectory>${project.build.directory}/generated-sources/thrift</outputDirectory>
-                            <thriftSourceRoot>${project.basedir}/src/main/resources</thriftSourceRoot>
+                            <thriftExecutable>${thrift.install.path}/bin/thrift</thriftExecutable>
                         </configuration>
                         <goals>
                             <goal>compile</goal>
@@ -196,7 +198,11 @@
             <version>26.0-jre</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
+            <version>0.11.0</version>
+        </dependency>
         <dependency>
             <groupId>org.msgpack</groupId>
             <artifactId>jackson-dataformat-msgpack</artifactId>
