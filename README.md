@@ -49,4 +49,4 @@ Make sure it is installed.
 
 # Results
 
-Results of a benchmark run on a 2013 MacBook Pro (2.4 GhZ Intel Core i7, 16 GB DDR3) with OpenJDK 11 can be found [here](results.txt).
+Results of a benchmark run on a 2013 MacBook Pro (2.4 GHz Intel Core i7, 16 GB DDR3) with OpenJDK 11 can be found [here](results.txt).
