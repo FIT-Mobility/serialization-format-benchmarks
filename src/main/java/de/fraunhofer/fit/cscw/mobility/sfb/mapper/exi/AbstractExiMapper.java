@@ -13,7 +13,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
@@ -28,20 +27,24 @@ import java.io.OutputStream;
 public abstract class AbstractExiMapper {
 
     private static final JaxbXmlByteArrayMapper xmlMapper = new JaxbXmlByteArrayMapper(false);
-    private static final EXIFactory exiFactory = DefaultEXIFactory.newInstance();
     private static final TransformerFactory tf = TransformerFactory.newInstance();
-    private static final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+    protected static final FidelityOptions fidelityOptions;
+    protected final EXIFactory exiFactory;
+
+    public AbstractExiMapper(final CodingMode codingMode) {
+        this.exiFactory = DefaultEXIFactory.newInstance();
+        this.exiFactory.setFidelityOptions(fidelityOptions);
+        this.exiFactory.setCodingMode(codingMode);
+    }
 
     static {
-        exiFactory.setCodingMode(CodingMode.COMPRESSION);
-        final FidelityOptions fidelityOptions = FidelityOptions.createDefault();
+        fidelityOptions = FidelityOptions.createDefault();
         try {
             fidelityOptions.setFidelity(FidelityOptions.FEATURE_PREFIX, true);
             fidelityOptions.setFidelity(FidelityOptions.FEATURE_LEXICAL_VALUE, true);
         } catch (final UnsupportedOption error) {
             throw new RuntimeException(error);
         }
-        exiFactory.setFidelityOptions(fidelityOptions);
     }
 
     ArrayOfBeer read(InputSource source) throws Exception {

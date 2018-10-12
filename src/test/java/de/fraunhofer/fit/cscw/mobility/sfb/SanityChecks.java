@@ -2,6 +2,7 @@ package de.fraunhofer.fit.cscw.mobility.sfb;
 
 import com.example.myproto.Protobuf;
 import com.example.myschema.ArrayOfBeer;
+import com.siemens.ct.exi.core.CodingMode;
 import de.fraunhofer.fit.cscw.mobility.sfb.compress.GzipCompressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.ProtobufConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.ThriftConverter;
@@ -44,7 +45,7 @@ public class SanityChecks {
                 new MapperTestCase(new JacksonJsonByteArrayMapper(), "data-jackson.json"),
                 new MapperTestCase(new InternalProtobufMapper(), "proto-buf"),
                 new MapperTestCase(new MessagePackByteArrayMapper(), "message-pack"),
-                new MapperTestCase(new EXIficientByteArrayMapper(), "data-exificient", true),
+                new MapperTestCase(new EXIficientByteArrayMapper(CodingMode.BIT_PACKED), "data-exificient", true),
                 new MapperTestCase(new FastInfosetByteArrayMapper(false), "data-fastInfoset", true),
                 new MapperTestCase(new InternalThriftMapper(), "thrift"),
                 new MapperTestCase(new CapnProtoByteArrayMapper(), "cap-n-proto")

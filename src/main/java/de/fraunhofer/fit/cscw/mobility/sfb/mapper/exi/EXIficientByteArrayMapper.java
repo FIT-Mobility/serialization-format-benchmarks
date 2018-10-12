@@ -1,6 +1,7 @@
 package de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi;
 
 import com.example.myschema.ArrayOfBeer;
+import com.siemens.ct.exi.core.CodingMode;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
 import org.xml.sax.InputSource;
 
@@ -11,6 +12,10 @@ import java.io.ByteArrayOutputStream;
  * @author Fabian Ohler <fabian.ohler1@rwth-aachen.de>
  */
 public class EXIficientByteArrayMapper extends AbstractExiMapper implements ByteArrayMapper<ArrayOfBeer> {
+    public EXIficientByteArrayMapper(CodingMode codingMode) {
+        super(codingMode);
+    }
+
     @Override
     public ArrayOfBeer read(final byte[] data) throws Exception {
         return super.read(new InputSource(new ByteArrayInputStream(data)));
