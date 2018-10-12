@@ -15,6 +15,7 @@ import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonByteArrayMappe
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.thrift.ThriftByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.AaltoXmlByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JaxbXmlByteArrayMapper;
 import lombok.RequiredArgsConstructor;
@@ -89,6 +90,12 @@ public class Benchmarks {
     public static class JaxbXmlBenchmark extends AbstractBenchmark<ArrayOfBeer> {
         public JaxbXmlBenchmark() {
             super(Function.identity(), new JaxbXmlByteArrayMapper(false));
+        }
+    }
+
+    public static class AaltoXmlBenchmark extends AbstractBenchmark<ArrayOfBeer> {
+        public AaltoXmlBenchmark() {
+            super(Function.identity(), new AaltoXmlByteArrayMapper());
         }
     }
 

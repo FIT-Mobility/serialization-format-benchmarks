@@ -13,6 +13,7 @@ import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonByteArrayMappe
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.thrift.ThriftByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.AaltoXmlByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JaxbXmlByteArrayMapper;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class SanityChecks {
     public void testIfEqual() {
         List<MapperTestCase> cases = Arrays.asList(
                 new MapperTestCase(new JaxbXmlByteArrayMapper(false), "data-jaxb.xml"),
+                new MapperTestCase(new AaltoXmlByteArrayMapper(), "data-aalto.xml"),
                 new MapperTestCase(new JacksonXmlByteArrayMapper(), "data-jackson.xml", false),
                 new MapperTestCase(new JacksonJsonByteArrayMapper(), "data-jackson.json"),
                 new MapperTestCase(new InternalProtobufMapper(), "proto-buf"),

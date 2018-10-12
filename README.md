@@ -13,7 +13,7 @@ The sample data is taken from [here](https://github.com/maximn/SerializationPerf
 - MessagePack
 - Protocol Buffers
 - Apache Thrift
-- XML (using JAXB and Jackson)
+- XML (using JAXB, JAXB with Aalto, Jackson)
 
 ### Thrift preparation
 
