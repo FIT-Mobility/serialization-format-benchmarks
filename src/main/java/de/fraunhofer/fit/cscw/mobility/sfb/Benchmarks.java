@@ -1,6 +1,5 @@
 package de.fraunhofer.fit.cscw.mobility.sfb;
 
-import com.example.myproto.Protobuf;
 import com.example.myschema.ArrayOfBeer;
 import com.example.thrift.ArrayOfBeerType;
 import com.siemens.ct.exi.core.CodingMode;
@@ -135,50 +134,50 @@ public class Benchmarks {
         }
     }
 
-    public static class JaxbXmlBenchmark extends AbstractBenchmark<ArrayOfBeer> {
-        public JaxbXmlBenchmark() {
+    public static class JaxbXml extends AbstractBenchmark<ArrayOfBeer> {
+        public JaxbXml() {
             super(Function.identity(), new JaxbXmlByteArrayMapper(false));
         }
     }
 
-    public static class AaltoXmlBenchmark extends AbstractBenchmark<ArrayOfBeer> {
-        public AaltoXmlBenchmark() {
+    public static class JaxbXmlViaAalto extends AbstractBenchmark<ArrayOfBeer> {
+        public JaxbXmlViaAalto() {
             super(Function.identity(), new AaltoXmlByteArrayMapper());
         }
     }
 
-    public static class JacksonXmlBenchmark extends AbstractBenchmark<ArrayOfBeer> {
-        public JacksonXmlBenchmark() {
+    public static class JaxbXmlViaJackson extends AbstractBenchmark<ArrayOfBeer> {
+        public JaxbXmlViaJackson() {
             super(Function.identity(), new JacksonXmlByteArrayMapper());
         }
     }
 
-    public static class JacksonJsonBenchmark extends AbstractBenchmark<ArrayOfBeer> {
-        public JacksonJsonBenchmark() {
+    public static class JsonViaJackson extends AbstractBenchmark<ArrayOfBeer> {
+        public JsonViaJackson() {
             super(Function.identity(), new JacksonJsonByteArrayMapper());
         }
     }
 
-    public static class MessagePackBenchmark extends AbstractBenchmark<ArrayOfBeer> {
-        public MessagePackBenchmark() {
+    public static class MessagePack extends AbstractBenchmark<ArrayOfBeer> {
+        public MessagePack() {
             super(Function.identity(), new MessagePackByteArrayMapper());
         }
     }
 
-    public static class ProtobufBenchmark extends AbstractBenchmark<Protobuf.ArrayOfBeerType> {
-        public ProtobufBenchmark() {
+    public static class Protobuf extends AbstractBenchmark<com.example.myproto.Protobuf.ArrayOfBeerType> {
+        public Protobuf() {
             super(ProtobufConverter.INSTANCE::convert, ProtobufByteArrayMapper.INSTANCE);
         }
     }
 
-    public static class ThriftBenchmark extends AbstractBenchmark<ArrayOfBeerType> {
-        public ThriftBenchmark() {
+    public static class Thrift extends AbstractBenchmark<ArrayOfBeerType> {
+        public Thrift() {
             super(ThriftConverter.INSTANCE::convert, new ThriftByteArrayMapper());
         }
     }
 
-    public static class EXIficientBenchmark extends AbstractInternalCompressionBenchmark<ArrayOfBeer> {
-        public EXIficientBenchmark() {
+    public static class EXIficient extends AbstractInternalCompressionBenchmark<ArrayOfBeer> {
+        public EXIficient() {
             super(Function.identity(),
                     new EXIficientByteArrayMapper(CodingMode.BIT_PACKED),
                     new EXIficientByteArrayMapper(CodingMode.PRE_COMPRESSION),
@@ -187,14 +186,14 @@ public class Benchmarks {
         }
     }
 
-    public static class FastInfosetBenchmark extends AbstractBenchmark<ArrayOfBeer> {
-        public FastInfosetBenchmark() {
+    public static class FastInfoset extends AbstractBenchmark<ArrayOfBeer> {
+        public FastInfoset() {
             super(Function.identity(), new FastInfosetByteArrayMapper(false));
         }
     }
 
-    public static class CapnProtoBenchmark extends AbstractBenchmark<ArrayOfBeer> {
-        public CapnProtoBenchmark() {
+    public static class CapnProto extends AbstractBenchmark<ArrayOfBeer> {
+        public CapnProto() {
             super(Function.identity(), new CapnProtoByteArrayMapper());
         }
     }
