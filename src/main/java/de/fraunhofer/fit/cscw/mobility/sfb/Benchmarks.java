@@ -3,11 +3,10 @@ package de.fraunhofer.fit.cscw.mobility.sfb;
 import com.example.myschema.ArrayOfBeer;
 import com.example.thrift.ArrayOfBeerType;
 import com.siemens.ct.exi.core.CodingMode;
-import de.fraunhofer.fit.cscw.mobility.sfb.compress.Compressor;
-import de.fraunhofer.fit.cscw.mobility.sfb.compress.GzipCompressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.ProtobufConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.ThriftConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.CompressingMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.capnproto.CapnProtoByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.fastinfoset.FastInfosetByteArrayMapper;
@@ -25,6 +24,7 @@ import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
@@ -38,64 +38,49 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * @author Fabian Ohler <fabian.ohler1@rwth-aachen.de>
  */
 public class Benchmarks {
 
-    private static final Compressor COMPRESSOR = GzipCompressor.INSTANCE;
-
     @BenchmarkMode(Mode.AverageTime)
     @Fork(1)
     @State(Scope.Thread)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    @Warmup(iterations = 10, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
-    @Measurement(iterations = 10, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
+    @Warmup(iterations = 10, time = 100, timeUnit = TimeUnit.MILLISECONDS)
+    @Measurement(iterations = 10, time = 100, timeUnit = TimeUnit.MILLISECONDS)
     @RequiredArgsConstructor
     public static abstract class AbstractBenchmark<BASEMODEL> {
-        final Function<ArrayOfBeer, BASEMODEL> converter;
-        final ByteArrayMapper<BASEMODEL> noCompressionMapper;
-        final ByteArrayMapper<BASEMODEL> externalCompressionMapper;
-        BASEMODEL model;
-        byte[] nonCompressedBytes;
-        byte[] externallyCompressedBytes;
 
-        public AbstractBenchmark(final Function<ArrayOfBeer, BASEMODEL> converter,
-                                 final ByteArrayMapper<BASEMODEL> mapper) {
-            this(converter, mapper, mapper);
-        }
+        final Function<ArrayOfBeer, BASEMODEL> converter;
+        final Supplier<ByteArrayMapper<BASEMODEL>> mapperSupplier;
+
+        ByteArrayMapper<BASEMODEL> mapper;
+        BASEMODEL model;
+        byte[] bytes;
 
         @Setup
         public void setup() {
+            mapper = mapperSupplier.get();
             model = converter.apply(Utils.GROUND_TRUTH);
-            nonCompressedBytes = noCompressionMapper.writeNoThrow(model);
-            externallyCompressedBytes = COMPRESSOR.compress(externalCompressionMapper.writeNoThrow(model));
+            bytes = mapper.writeNoThrow(model);
         }
 
         @Benchmark
         public void bytesToObject(final Blackhole bh) {
-            bh.consume(noCompressionMapper.readNoThrow(nonCompressedBytes));
-        }
-
-        @Benchmark
-        public void bytesToObjectExternalCompression(final Blackhole bh) {
-            bh.consume(externalCompressionMapper.readNoThrow(COMPRESSOR.decompress(externallyCompressedBytes)));
+            bh.consume(mapper.readNoThrow(bytes));
         }
 
         @Benchmark
         public void objectToBytes(final Blackhole bh) {
-            bh.consume(noCompressionMapper.writeNoThrow(model));
-        }
-
-        @Benchmark
-        public void objectToBytesExternalCompression(final Blackhole bh) {
-            bh.consume(COMPRESSOR.compress(externalCompressionMapper.writeNoThrow(model)));
+            bh.consume(mapper.writeNoThrow(model));
         }
 
         @Benchmark
         public void roundTripAndCheckEquality(final Blackhole bh) {
-            final BASEMODEL otherModel = noCompressionMapper.readNoThrow(noCompressionMapper.writeNoThrow(model));
+            final BASEMODEL otherModel = mapper.readNoThrow(mapper.writeNoThrow(model));
             final boolean equal = Objects.equals(model, otherModel);
             if (!equal) {
                 System.err.println("NOT EQUAL!!!");
@@ -104,97 +89,109 @@ public class Benchmarks {
         }
     }
 
-    public static abstract class AbstractInternalCompressionBenchmark<BASEMODEL> extends AbstractBenchmark<BASEMODEL> {
-        final ByteArrayMapper<BASEMODEL> internalCompressionMapper;
-        byte[] internallyCompressedBytes;
+    public static abstract class CompressionBenchmark<BASEMODEL> extends AbstractBenchmark<BASEMODEL> {
 
-        public AbstractInternalCompressionBenchmark(
-                final Function<ArrayOfBeer, BASEMODEL> converter,
-                final ByteArrayMapper<BASEMODEL> noCompressionMapper,
-                final ByteArrayMapper<BASEMODEL> externalCompressionMapper,
-                final ByteArrayMapper<BASEMODEL> internalCompressionMapper) {
-            super(converter, noCompressionMapper, externalCompressionMapper);
-            this.internalCompressionMapper = internalCompressionMapper;
+        final Supplier<CompressingMapper<BASEMODEL>> compressingMapperSupplier;
+
+        @Param({"false", "true"})
+        boolean withCompression;
+
+        public CompressionBenchmark(Function<ArrayOfBeer, BASEMODEL> converter,
+                                    Supplier<ByteArrayMapper<BASEMODEL>> byteArrayMapperSupplier,
+                                    Supplier<CompressingMapper<BASEMODEL>> compressingMapperSupplier) {
+            super(converter, byteArrayMapperSupplier);
+            this.compressingMapperSupplier = compressingMapperSupplier;
         }
 
-        @Override
+        @Setup
         public void setup() {
-            super.setup();
-            internallyCompressedBytes = internalCompressionMapper.writeNoThrow(model);
-        }
-
-        @Benchmark
-        public void bytesToObjectInternalCompression(final Blackhole bh) {
-            bh.consume(internalCompressionMapper.readNoThrow(internallyCompressedBytes));
-        }
-
-        @Benchmark
-        public void objectToBytesInternalCompression(final Blackhole bh) {
-            bh.consume(internalCompressionMapper.writeNoThrow(model));
+            if (withCompression) {
+                mapper = compressingMapperSupplier.get();
+            } else {
+                mapper = mapperSupplier.get();
+            }
+            model = converter.apply(Utils.GROUND_TRUTH);
+            bytes = mapper.writeNoThrow(model);
         }
     }
 
-    public static class JaxbXml extends AbstractBenchmark<ArrayOfBeer> {
+    public static abstract class GzipCompressionBenchmark<BASEMODEL> extends CompressionBenchmark<BASEMODEL> {
+
+        public GzipCompressionBenchmark(Function<ArrayOfBeer, BASEMODEL> converter,
+                                        Supplier<ByteArrayMapper<BASEMODEL>> mapperSupplier) {
+            super(converter, mapperSupplier, () -> CompressingMapper.createGzip(mapperSupplier.get()));
+        }
+    }
+
+    public static class JaxbXml extends GzipCompressionBenchmark<ArrayOfBeer> {
         public JaxbXml() {
-            super(Function.identity(), new JaxbXmlByteArrayMapper(false));
+            super(Function.identity(), () -> new JaxbXmlByteArrayMapper(false));
         }
     }
 
-    public static class JaxbXmlViaAalto extends AbstractBenchmark<ArrayOfBeer> {
+    public static class JaxbXmlViaAalto extends GzipCompressionBenchmark<ArrayOfBeer> {
         public JaxbXmlViaAalto() {
-            super(Function.identity(), new AaltoXmlByteArrayMapper());
+            super(Function.identity(), AaltoXmlByteArrayMapper::new);
         }
     }
 
-    public static class JaxbXmlViaJackson extends AbstractBenchmark<ArrayOfBeer> {
+    public static class JaxbXmlViaJackson extends GzipCompressionBenchmark<ArrayOfBeer> {
         public JaxbXmlViaJackson() {
-            super(Function.identity(), new JacksonXmlByteArrayMapper());
+            super(Function.identity(), JacksonXmlByteArrayMapper::new);
         }
     }
 
-    public static class JsonViaJackson extends AbstractBenchmark<ArrayOfBeer> {
+    public static class JsonViaJackson extends GzipCompressionBenchmark<ArrayOfBeer> {
         public JsonViaJackson() {
-            super(Function.identity(), new JacksonJsonByteArrayMapper());
+            super(Function.identity(), JacksonJsonByteArrayMapper::new);
         }
     }
 
-    public static class MessagePack extends AbstractBenchmark<ArrayOfBeer> {
+    public static class MessagePack extends GzipCompressionBenchmark<ArrayOfBeer> {
         public MessagePack() {
-            super(Function.identity(), new MessagePackByteArrayMapper());
+            super(Function.identity(), MessagePackByteArrayMapper::new);
         }
     }
 
-    public static class Protobuf extends AbstractBenchmark<com.example.myproto.Protobuf.ArrayOfBeerType> {
+    public static class Protobuf extends GzipCompressionBenchmark<com.example.myproto.Protobuf.ArrayOfBeerType> {
         public Protobuf() {
-            super(ProtobufConverter.INSTANCE::convert, ProtobufByteArrayMapper.INSTANCE);
+            super(ProtobufConverter.INSTANCE::convert, () -> ProtobufByteArrayMapper.INSTANCE);
         }
     }
 
-    public static class Thrift extends AbstractBenchmark<ArrayOfBeerType> {
+    public static class Thrift extends GzipCompressionBenchmark<ArrayOfBeerType> {
         public Thrift() {
-            super(ThriftConverter.INSTANCE::convert, new ThriftByteArrayMapper());
+            super(ThriftConverter.INSTANCE::convert, ThriftByteArrayMapper::new);
         }
     }
 
-    public static class EXIficient extends AbstractInternalCompressionBenchmark<ArrayOfBeer> {
-        public EXIficient() {
-            super(Function.identity(),
-                    new EXIficientByteArrayMapper(CodingMode.BIT_PACKED),
-                    new EXIficientByteArrayMapper(CodingMode.PRE_COMPRESSION),
-                    new EXIficientByteArrayMapper(CodingMode.COMPRESSION)
-            );
+    public static class ExiBitPacked extends GzipCompressionBenchmark<ArrayOfBeer> {
+        public ExiBitPacked() {
+            super(Function.identity(), () -> new EXIficientByteArrayMapper(CodingMode.BIT_PACKED));
         }
     }
 
-    public static class FastInfoset extends AbstractBenchmark<ArrayOfBeer> {
+    public static class ExiPreCompression extends GzipCompressionBenchmark<ArrayOfBeer> {
+        public ExiPreCompression() {
+            super(Function.identity(), () -> new EXIficientByteArrayMapper(CodingMode.PRE_COMPRESSION));
+        }
+    }
+
+    public static class ExiInternalCompression extends AbstractBenchmark<ArrayOfBeer> {
+        public ExiInternalCompression() {
+            super(Function.identity(), () -> new EXIficientByteArrayMapper(CodingMode.COMPRESSION));
+        }
+    }
+
+    public static class FastInfoset extends GzipCompressionBenchmark<ArrayOfBeer> {
         public FastInfoset() {
-            super(Function.identity(), new FastInfosetByteArrayMapper(false));
+            super(Function.identity(), () -> new FastInfosetByteArrayMapper(false));
         }
     }
 
-    public static class CapnProto extends AbstractBenchmark<ArrayOfBeer> {
+    public static class CapnProto extends GzipCompressionBenchmark<ArrayOfBeer> {
         public CapnProto() {
-            super(Function.identity(), new CapnProtoByteArrayMapper());
+            super(Function.identity(), CapnProtoByteArrayMapper::new);
         }
     }
 
