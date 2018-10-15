@@ -1,8 +1,7 @@
 package de.fraunhofer.fit.cscw.mobility.sfb.mapper.json;
 
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 
 /**
@@ -15,12 +14,7 @@ abstract class AbstractJacksonJsonMapper {
 
     static {
         mapper = new ObjectMapper();
-
-        mapper.setAnnotationIntrospector(
-                AnnotationIntrospector.pair(
-                        new JacksonAnnotationIntrospector(),
-                        new JaxbAnnotationIntrospector(mapper.getTypeFactory())
-                )
-        );
+        mapper.setAnnotationIntrospector(new JaxbAnnotationIntrospector(mapper.getTypeFactory()));
+        mapper.registerModule(new AfterburnerModule()); // to add dynamic bytecode generation and avoid reflection
     }
 }
