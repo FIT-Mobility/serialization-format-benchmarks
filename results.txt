@@ -8,44 +8,73 @@
 # Threads: 1 thread, will synchronize iterations
 # Benchmark mode: Average time, time/op
 
-Benchmark                                                Mode  Cnt   Score   Error  Units
-Benchmarks.AaltoXmlBenchmark.bytesToObject               avgt   10   5,638 ± 1,031  ms/op
-Benchmarks.AaltoXmlBenchmark.compressedBytesToObject     avgt   10   6,268 ± 1,322  ms/op
-Benchmarks.AaltoXmlBenchmark.objectToBytes               avgt   10   1,832 ± 0,019  ms/op
-Benchmarks.AaltoXmlBenchmark.objectToCompressedBytes     avgt   10   5,733 ± 0,060  ms/op
-Benchmarks.CapnProtoBenchmark.bytesToObject              avgt   10   2,214 ± 0,028  ms/op
-Benchmarks.CapnProtoBenchmark.compressedBytesToObject    avgt   10   3,129 ± 0,051  ms/op
-Benchmarks.CapnProtoBenchmark.objectToBytes              avgt   10   2,349 ± 0,049  ms/op
-Benchmarks.CapnProtoBenchmark.objectToCompressedBytes    avgt   10   9,240 ± 0,244  ms/op
-Benchmarks.EXIficientBenchmark.bytesToObject             avgt   10  54,427 ± 1,602  ms/op
-Benchmarks.EXIficientBenchmark.compressedBytesToObject   avgt   10  55,222 ± 1,392  ms/op
-Benchmarks.EXIficientBenchmark.objectToBytes             avgt   10  88,411 ± 1,837  ms/op
-Benchmarks.EXIficientBenchmark.objectToCompressedBytes   avgt   10  68,703 ± 3,349  ms/op
-Benchmarks.FastInfosetBenchmark.bytesToObject            avgt   10   5,275 ± 0,993  ms/op
-Benchmarks.FastInfosetBenchmark.compressedBytesToObject  avgt   10   5,728 ± 0,646  ms/op
-Benchmarks.FastInfosetBenchmark.objectToBytes            avgt   10   2,044 ± 0,053  ms/op
-Benchmarks.FastInfosetBenchmark.objectToCompressedBytes  avgt   10   5,950 ± 0,070  ms/op
-Benchmarks.JacksonJsonBenchmark.bytesToObject            avgt   10   1,146 ± 0,022  ms/op
-Benchmarks.JacksonJsonBenchmark.compressedBytesToObject  avgt   10   1,716 ± 0,053  ms/op
-Benchmarks.JacksonJsonBenchmark.objectToBytes            avgt   10   0,722 ± 0,013  ms/op
-Benchmarks.JacksonJsonBenchmark.objectToCompressedBytes  avgt   10   4,479 ± 0,161  ms/op
-Benchmarks.JacksonXmlBenchmark.bytesToObject             avgt   10   3,277 ± 0,109  ms/op
-Benchmarks.JacksonXmlBenchmark.compressedBytesToObject   avgt   10   4,187 ± 0,087  ms/op
-Benchmarks.JacksonXmlBenchmark.objectToBytes             avgt   10   1,695 ± 0,027  ms/op
-Benchmarks.JacksonXmlBenchmark.objectToCompressedBytes   avgt   10   5,804 ± 0,174  ms/op
-Benchmarks.JaxbXmlBenchmark.bytesToObject                avgt   10   7,301 ± 1,165  ms/op
-Benchmarks.JaxbXmlBenchmark.compressedBytesToObject      avgt   10   7,910 ± 0,926  ms/op
-Benchmarks.JaxbXmlBenchmark.objectToBytes                avgt   10   2,705 ± 0,062  ms/op
-Benchmarks.JaxbXmlBenchmark.objectToCompressedBytes      avgt   10   6,970 ± 0,118  ms/op
-Benchmarks.MessagePackBenchmark.bytesToObject            avgt   10   1,476 ± 0,024  ms/op
-Benchmarks.MessagePackBenchmark.compressedBytesToObject  avgt   10   1,980 ± 0,045  ms/op
-Benchmarks.MessagePackBenchmark.objectToBytes            avgt   10   1,312 ± 0,030  ms/op
-Benchmarks.MessagePackBenchmark.objectToCompressedBytes  avgt   10   4,768 ± 0,057  ms/op
-Benchmarks.ProtobufBenchmark.bytesToObject               avgt   10   0,489 ± 0,003  ms/op
-Benchmarks.ProtobufBenchmark.compressedBytesToObject     avgt   10   1,053 ± 0,029  ms/op
-Benchmarks.ProtobufBenchmark.objectToBytes               avgt   10   0,346 ± 0,005  ms/op
-Benchmarks.ProtobufBenchmark.objectToCompressedBytes     avgt   10   3,806 ± 0,044  ms/op
-Benchmarks.ThriftBenchmark.bytesToObject                 avgt   10   0,676 ± 0,010  ms/op
-Benchmarks.ThriftBenchmark.compressedBytesToObject       avgt   10   1,319 ± 0,022  ms/op
-Benchmarks.ThriftBenchmark.objectToBytes                 avgt   10   0,707 ± 0,009  ms/op
-Benchmarks.ThriftBenchmark.objectToCompressedBytes       avgt   10   4,688 ± 0,046  ms/op
+Benchmark                                                    (withCompression)  Mode  Cnt    Score     Error  Units
+Benchmarks.CapnProto.bytesToObject                                       false  avgt   10    2,351 ±   0,211  ms/op
+Benchmarks.CapnProto.bytesToObject                                        true  avgt   10    3,297 ±   0,371  ms/op
+Benchmarks.CapnProto.objectToBytes                                       false  avgt   10    2,911 ±   1,856  ms/op
+Benchmarks.CapnProto.objectToBytes                                        true  avgt   10    9,438 ±   0,625  ms/op
+Benchmarks.CapnProto.roundTripAndCheckEquality                           false  avgt   10    7,228 ±   3,126  ms/op
+Benchmarks.CapnProto.roundTripAndCheckEquality                            true  avgt   10   13,769 ±   0,804  ms/op
+Benchmarks.ExiBitPacked.bytesToObject                                    false  avgt   10   13,673 ±   5,282  ms/op
+Benchmarks.ExiBitPacked.bytesToObject                                     true  avgt   10   13,861 ±   3,281  ms/op
+Benchmarks.ExiBitPacked.objectToBytes                                    false  avgt   10   92,514 ± 386,008  ms/op
+Benchmarks.ExiBitPacked.objectToBytes                                     true  avgt   10   13,474 ±   1,192  ms/op
+Benchmarks.ExiBitPacked.roundTripAndCheckEquality                        false  avgt   10   23,354 ±   1,925  ms/op
+Benchmarks.ExiBitPacked.roundTripAndCheckEquality                         true  avgt   10   27,416 ±   2,997  ms/op
+Benchmarks.ExiInternalCompression.bytesToObject                            N/A  avgt   10   62,070 ±  14,016  ms/op
+Benchmarks.ExiInternalCompression.objectToBytes                            N/A  avgt   10   60,789 ±   5,720  ms/op
+Benchmarks.ExiInternalCompression.roundTripAndCheckEquality                N/A  avgt   10  122,449 ±  20,181  ms/op
+Benchmarks.ExiPreCompression.bytesToObject                               false  avgt   10   13,212 ±   1,266  ms/op
+Benchmarks.ExiPreCompression.bytesToObject                                true  avgt   10   14,554 ±   4,445  ms/op
+Benchmarks.ExiPreCompression.objectToBytes                               false  avgt   10   10,193 ±   0,991  ms/op
+Benchmarks.ExiPreCompression.objectToBytes                                true  avgt   10   13,432 ±   2,325  ms/op
+Benchmarks.ExiPreCompression.roundTripAndCheckEquality                   false  avgt   10   24,816 ±   4,873  ms/op
+Benchmarks.ExiPreCompression.roundTripAndCheckEquality                    true  avgt   10   36,136 ±  11,736  ms/op
+Benchmarks.FastInfoset.bytesToObject                                     false  avgt   10   10,137 ±   3,896  ms/op
+Benchmarks.FastInfoset.bytesToObject                                      true  avgt   10    6,681 ±   2,097  ms/op
+Benchmarks.FastInfoset.objectToBytes                                     false  avgt   10    2,236 ±   0,201  ms/op
+Benchmarks.FastInfoset.objectToBytes                                      true  avgt   10    6,367 ±   0,690  ms/op
+Benchmarks.FastInfoset.roundTripAndCheckEquality                         false  avgt   10    9,462 ±   2,356  ms/op
+Benchmarks.FastInfoset.roundTripAndCheckEquality                          true  avgt   10   12,863 ±   1,498  ms/op
+Benchmarks.JaxbXml.bytesToObject                                         false  avgt   10    8,223 ±   3,514  ms/op
+Benchmarks.JaxbXml.bytesToObject                                          true  avgt   10    9,351 ±   1,730  ms/op
+Benchmarks.JaxbXml.objectToBytes                                         false  avgt   10    2,672 ±   0,092  ms/op
+Benchmarks.JaxbXml.objectToBytes                                          true  avgt   10    6,929 ±   0,379  ms/op
+Benchmarks.JaxbXml.roundTripAndCheckEquality                             false  avgt   10   11,798 ±   1,170  ms/op
+Benchmarks.JaxbXml.roundTripAndCheckEquality                              true  avgt   10   15,806 ±   1,098  ms/op
+Benchmarks.JaxbXmlViaAalto.bytesToObject                                 false  avgt   10    6,548 ±   1,153  ms/op
+Benchmarks.JaxbXmlViaAalto.bytesToObject                                  true  avgt   10    6,534 ±   1,673  ms/op
+Benchmarks.JaxbXmlViaAalto.objectToBytes                                 false  avgt   10    1,816 ±   0,080  ms/op
+Benchmarks.JaxbXmlViaAalto.objectToBytes                                  true  avgt   10    5,842 ±   0,120  ms/op
+Benchmarks.JaxbXmlViaAalto.roundTripAndCheckEquality                     false  avgt   10    8,832 ±   1,970  ms/op
+Benchmarks.JaxbXmlViaAalto.roundTripAndCheckEquality                      true  avgt   10   13,421 ±   2,175  ms/op
+Benchmarks.JaxbXmlViaJackson.bytesToObject                               false  avgt   10    3,533 ±   0,718  ms/op
+Benchmarks.JaxbXmlViaJackson.bytesToObject                                true  avgt   10    4,542 ±   0,890  ms/op
+Benchmarks.JaxbXmlViaJackson.objectToBytes                               false  avgt   10    1,789 ±   0,247  ms/op
+Benchmarks.JaxbXmlViaJackson.objectToBytes                                true  avgt   10    6,163 ±   0,423  ms/op
+Benchmarks.JaxbXmlViaJackson.roundTripAndCheckEquality                   false  avgt   10    6,218 ±   0,968  ms/op
+Benchmarks.JaxbXmlViaJackson.roundTripAndCheckEquality                    true  avgt   10   11,722 ±   1,212  ms/op
+Benchmarks.JsonViaJackson.bytesToObject                                  false  avgt   10    1,268 ±   0,397  ms/op
+Benchmarks.JsonViaJackson.bytesToObject                                   true  avgt   10    1,967 ±   0,652  ms/op
+Benchmarks.JsonViaJackson.objectToBytes                                  false  avgt   10    0,727 ±   0,056  ms/op
+Benchmarks.JsonViaJackson.objectToBytes                                   true  avgt   10    4,717 ±   0,360  ms/op
+Benchmarks.JsonViaJackson.roundTripAndCheckEquality                      false  avgt   10    2,791 ±   0,182  ms/op
+Benchmarks.JsonViaJackson.roundTripAndCheckEquality                       true  avgt   10    7,747 ±   1,236  ms/op
+Benchmarks.MessagePack.bytesToObject                                     false  avgt   10    1,476 ±   0,042  ms/op
+Benchmarks.MessagePack.bytesToObject                                      true  avgt   10    2,024 ±   0,081  ms/op
+Benchmarks.MessagePack.objectToBytes                                     false  avgt   10    1,477 ±   0,347  ms/op
+Benchmarks.MessagePack.objectToBytes                                      true  avgt   10    4,862 ±   0,286  ms/op
+Benchmarks.MessagePack.roundTripAndCheckEquality                         false  avgt   10    3,875 ±   0,195  ms/op
+Benchmarks.MessagePack.roundTripAndCheckEquality                          true  avgt   10    7,866 ±   0,729  ms/op
+Benchmarks.Protobuf.bytesToObject                                        false  avgt   10    0,551 ±   0,203  ms/op
+Benchmarks.Protobuf.bytesToObject                                         true  avgt   10    1,189 ±   0,378  ms/op
+Benchmarks.Protobuf.objectToBytes                                        false  avgt   10    0,347 ±   0,016  ms/op
+Benchmarks.Protobuf.objectToBytes                                         true  avgt   10    4,019 ±   0,277  ms/op
+Benchmarks.Protobuf.roundTripAndCheckEquality                            false  avgt   10    1,529 ±   0,434  ms/op
+Benchmarks.Protobuf.roundTripAndCheckEquality                             true  avgt   10    5,686 ±   0,172  ms/op
+Benchmarks.Thrift.bytesToObject                                          false  avgt   10    0,741 ±   0,160  ms/op
+Benchmarks.Thrift.bytesToObject                                           true  avgt   10    1,458 ±   0,482  ms/op
+Benchmarks.Thrift.objectToBytes                                          false  avgt   10    0,758 ±   0,109  ms/op
+Benchmarks.Thrift.objectToBytes                                           true  avgt   10    5,054 ±   0,150  ms/op
+Benchmarks.Thrift.roundTripAndCheckEquality                              false  avgt   10    1,999 ±   0,113  ms/op
+Benchmarks.Thrift.roundTripAndCheckEquality                               true  avgt   10    6,365 ±   0,303  ms/op
