@@ -11,8 +11,10 @@ import de.fraunhofer.fit.cscw.mobility.sfb.mapper.capnproto.CapnProtoByteArrayMa
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.fastinfoset.FastInfosetByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonSmileByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protostuff.ProtostuffBinaryArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.thrift.ThriftByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.AaltoXmlByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlByteArrayMapper;
@@ -43,12 +45,14 @@ public class SanityChecks {
                 new MapperTestCase(new AaltoXmlByteArrayMapper(), "data-aalto.xml"),
                 new MapperTestCase(new JacksonXmlByteArrayMapper(), "data-jackson.xml", false),
                 new MapperTestCase(new JacksonJsonByteArrayMapper(), "data-jackson.json"),
+                new MapperTestCase(new JacksonSmileByteArrayMapper(), "data-jackson-smile"),
                 new MapperTestCase(new InternalProtobufMapper(), "proto-buf"),
                 new MapperTestCase(new MessagePackByteArrayMapper(), "message-pack"),
                 new MapperTestCase(new EXIficientByteArrayMapper(CodingMode.BIT_PACKED), "data-exificient", true),
                 new MapperTestCase(new FastInfosetByteArrayMapper(false), "data-fastInfoset", true),
                 new MapperTestCase(new InternalThriftMapper(), "thrift"),
-                new MapperTestCase(new CapnProtoByteArrayMapper(), "cap-n-proto")
+                new MapperTestCase(new CapnProtoByteArrayMapper(), "cap-n-proto"),
+                new MapperTestCase(new ProtostuffBinaryArrayMapper(), "proto-stuff")
         );
 
         cases.forEach(MapperTestCase::writeToFile);

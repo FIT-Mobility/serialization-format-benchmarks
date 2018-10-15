@@ -14,6 +14,7 @@ import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonJsonByteArrayMappe
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.json.JacksonSmileByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.msgpack.MessagePackByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protobuf.ProtobufByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.protostuff.ProtostuffBinaryArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.thrift.ThriftByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.AaltoXmlByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.xml.JacksonXmlByteArrayMapper;
@@ -50,8 +51,8 @@ public class Benchmarks {
     @Fork(1)
     @State(Scope.Thread)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    @Warmup(iterations = 10, time = 100, timeUnit = TimeUnit.MILLISECONDS)
-    @Measurement(iterations = 10, time = 100, timeUnit = TimeUnit.MILLISECONDS)
+    @Warmup(iterations = 10, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
+    @Measurement(iterations = 10, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
     @RequiredArgsConstructor
     public static abstract class AbstractBenchmark<BASEMODEL> {
 
@@ -163,6 +164,12 @@ public class Benchmarks {
     public static class Protobuf extends GzipCompressionBenchmark<com.example.myproto.Protobuf.ArrayOfBeerType> {
         public Protobuf() {
             super(ProtobufConverter.INSTANCE::convert, () -> ProtobufByteArrayMapper.INSTANCE);
+        }
+    }
+
+    public static class Protostuff extends GzipCompressionBenchmark<ArrayOfBeer> {
+        public Protostuff() {
+            super(Function.identity(), ProtostuffBinaryArrayMapper::new);
         }
     }
 

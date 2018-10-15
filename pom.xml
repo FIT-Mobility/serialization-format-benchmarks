@@ -21,6 +21,7 @@
         <protobuf.version>3.6.1</protobuf.version>
         <exificient.version>1.0.1</exificient.version>
         <fastInfoset.version>1.2.15</fastInfoset.version>
+        <protostuff.version>1.5.9</protostuff.version>
     </properties>
 
     <build>
@@ -283,6 +284,17 @@
             <groupId>org.msgpack</groupId>
             <artifactId>jackson-dataformat-msgpack</artifactId>
             <version>0.8.16</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+            <version>${protostuff.version}</version>
         </dependency>
 
         <!-- RunBenchmark-->
