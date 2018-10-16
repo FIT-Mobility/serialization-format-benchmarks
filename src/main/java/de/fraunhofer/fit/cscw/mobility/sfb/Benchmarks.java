@@ -1,5 +1,6 @@
 package de.fraunhofer.fit.cscw.mobility.sfb;
 
+import com.beust.jcommander.JCommander;
 import com.example.myschema.ArrayOfBeer;
 import com.example.thrift.ArrayOfBeerType;
 import com.siemens.ct.exi.core.CodingMode;
@@ -34,7 +35,7 @@ import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.Objects;
@@ -210,10 +211,42 @@ public class Benchmarks {
     }
 
     public static void main(String[] args) throws RunnerException {
-        Options opt = new OptionsBuilder()
-                .include(Benchmarks.class.getSimpleName())
-                .build();
+        BenchmarksConfig config = new BenchmarksConfig();
+        JCommander jCommander = new JCommander(config);
 
-        new Runner(opt).run();
+        if (printInfo(args)) {
+            jCommander.setProgramName("serialization-format-benchmarks");
+            jCommander.usage();
+        } else {
+            jCommander.parse(args);
+            run(config);
+        }
     }
+
+    private static boolean printInfo(String[] args) {
+        return args.length == 1 && "info".equals(args[0]);
+    }
+
+    private static void run(BenchmarksConfig config) throws RunnerException {
+        ChainedOptionsBuilder opt = new OptionsBuilder();
+
+        switch (config.getCompressionTests()) {
+            case without:
+                opt.param("withCompression", "false");
+                break;
+            case with:
+                opt.param("withCompression", "true");
+                break;
+            case both:
+            default:
+                // Do nothing
+                break;
+        }
+
+        config.getIncludeRegex().forEach(opt::include);
+        config.getExcludeRegex().forEach(opt::exclude);
+
+        new Runner(opt.build()).run();
+    }
+
 }

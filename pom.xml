@@ -297,6 +297,12 @@
             <version>${protostuff.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.72</version>
+        </dependency>
+
         <!-- RunBenchmark-->
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
