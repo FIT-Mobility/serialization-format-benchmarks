@@ -45,11 +45,31 @@ Make sure it is installed.
     # mvn package
     ```
 
-2. Run the benchmarks:
+2. Run all benchmarks:
 
     ```
     # java -jar target/serialization-format-benchmarks.jar
     ```
+    
+    Usage with options (`java -jar target/serialization-format-benchmarks.jar info` prints the following):
+    
+     ```
+     Usage: serialization-format-benchmarks [options]
+       Options:
+         -c, --comp
+           Benchmark with no compression (without), compression (with) or both
+           (both)
+           Default: both
+           Possible Values: [without, with, both]
+         -e, --exclude
+           Comma separated regex list to exclude benchmarks from the run.
+           Default: []
+         -i, --include
+           Comma separated regex list to include benchmark in the run. Default
+           value runs all benchmarks
+           Default: [Benchmarks]
+     ```
+    
 
 # Results
 
