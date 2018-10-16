@@ -4,10 +4,15 @@ jdk: openjdk11
 
 install: mvn dependency:go-offline -B -V
 
-script: 
-        - mvn clean package
-        - java target/serialization-format-benchmarks.jar -c NoCompression -e roundTripAndCheckEquality
+script:
+- mvn clean package
+- java target/serialization-format-benchmarks.jar -c NoCompression -e roundTripAndCheckEquality
+
+addons:
+  apt:
+    packages:
+    - thrift-compiler
 
 cache:
-        directories:
-                - $HOME/.m2
+  directories:
+  - $HOME/.m2
