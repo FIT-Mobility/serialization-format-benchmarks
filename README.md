@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/FIT-CSCW-Mobility/serialization-format-benchmarks.svg?branch=master)](https://travis-ci.org/FIT-CSCW-Mobility/serialization-format-benchmarks)
+
+
 # Description
 
 This project benchmarks common data serialization formats using [JMH](http://openjdk.java.net/projects/code-tools/jmh/).
