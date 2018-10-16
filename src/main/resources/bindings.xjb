@@ -3,10 +3,17 @@
               xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
               xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
               xmlns:xs="http://www.w3.org/2001/XMLSchema"
-              jxb:extensionBindingPrefixes="xjc">
+              xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+              jxb:extensionBindingPrefixes="inheritance xjc">
 
     <jxb:globalBindings generateIsSetMethod="true">
         <xjc:simple/>
     </jxb:globalBindings>
+
+    <jxb:bindings schemaLocation= "beers.xsd" node="/xs:schema">
+        <jxb:bindings multiple="true" node="xs:complexType">
+            <inheritance:implements>java.io.Serializable</inheritance:implements>
+        </jxb:bindings>
+    </jxb:bindings>
 
 </jxb:bindings>

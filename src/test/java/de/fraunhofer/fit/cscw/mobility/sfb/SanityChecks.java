@@ -7,6 +7,7 @@ import de.fraunhofer.fit.cscw.mobility.sfb.compress.GzipCompressor;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.ProtobufConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.conversion.ThriftConverter;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.ByteArrayMapper;
+import de.fraunhofer.fit.cscw.mobility.sfb.mapper.JavaObjectByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.capnproto.CapnProtoByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.exi.EXIficientByteArrayMapper;
 import de.fraunhofer.fit.cscw.mobility.sfb.mapper.fastinfoset.FastInfosetByteArrayMapper;
@@ -52,7 +53,8 @@ public class SanityChecks {
                 new MapperTestCase(new FastInfosetByteArrayMapper(false), "data-fastInfoset", true),
                 new MapperTestCase(new InternalThriftMapper(), "thrift"),
                 new MapperTestCase(new CapnProtoByteArrayMapper(), "cap-n-proto"),
-                new MapperTestCase(new ProtostuffBinaryArrayMapper(), "proto-stuff")
+                new MapperTestCase(new ProtostuffBinaryArrayMapper(), "proto-stuff"),
+                new MapperTestCase(new JavaObjectByteArrayMapper(), "data.ser")
         );
 
         cases.forEach(MapperTestCase::writeToFile);

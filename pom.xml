@@ -54,6 +54,7 @@
                     <extension>true</extension>
                     <args>
                         <arg>-Xfluent-api</arg>
+                        <arg>-Xinheritance</arg>
                         <arg>-Xequals</arg>
                         <arg>-XhashCode</arg>
                         <arg>-XtoString</arg>

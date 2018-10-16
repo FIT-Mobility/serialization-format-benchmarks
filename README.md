@@ -18,6 +18,7 @@ The sample data is taken from [here](https://github.com/maximn/SerializationPerf
 - Protocol Buffers
 - Apache Thrift
 - XML (using JAXB, JAXB with Aalto, Jackson)
+- Java Object serialization (functions as _control group_)
 
 ### Thrift preparation
 
