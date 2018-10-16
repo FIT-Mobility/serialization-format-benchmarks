@@ -14,6 +14,7 @@ The sample data is taken from [here](https://github.com/maximn/SerializationPerf
 - Fast Infoset
 - Json (using Jackson)
 - MessagePack
+- Protostuff
 - Protocol Buffers
 - Apache Thrift
 - XML (using JAXB, JAXB with Aalto, Jackson)
