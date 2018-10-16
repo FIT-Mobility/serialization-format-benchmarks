@@ -6,7 +6,9 @@ install: mvn dependency:go-offline -B -V
 
 script:
 - mvn clean package
-- java target/serialization-format-benchmarks.jar -c NoCompression -e roundTripAndCheckEquality
+
+after_success:
+- java -jar target/serialization-format-benchmarks.jar -c without -e roundTripAndCheckEquality
 
 addons:
   apt:
