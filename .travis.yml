@@ -1,0 +1,13 @@
+sudo: false
+language: java
+jdk: openjdk11
+
+install: mvn dependency:go-offline -B -V
+
+script: 
+        - mvn clean package
+        - java target/serialization-format-benchmarks.jar -c NoCompression -e roundTripAndCheckEquality
+
+cache:
+        directories:
+                - $HOME/.m2
