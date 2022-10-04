@@ -18,7 +18,7 @@
         <jmh.version>1.21</jmh.version>
         <msgpack.version>0.6.12</msgpack.version>
         <org.jvnet.jaxb2_commons.version>0.12.0</org.jvnet.jaxb2_commons.version>
-        <protobuf.version>3.6.1</protobuf.version>
+        <protobuf.version>3.16.3</protobuf.version>
         <exificient.version>1.0.1</exificient.version>
         <fastInfoset.version>1.2.15</fastInfoset.version>
         <protostuff.version>1.5.9</protostuff.version>
