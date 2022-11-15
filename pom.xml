@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <lombok.version>1.18.2</lombok.version>
-        <jackson.version>2.10.0</jackson.version>
+        <jackson.version>2.12.7.1</jackson.version>
         <jaxb.version>2.3.1</jaxb.version>
         <jmh.version>1.21</jmh.version>
         <msgpack.version>0.6.12</msgpack.version>
